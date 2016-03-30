@@ -13,7 +13,7 @@ def execute(filters=None):
 	data = []
 	source = lcv_data.grouped_data if filters.get("group_by") != "Purchase Receipt" else lcv_data.data
 	group_wise_columns = frappe._dict({
-		"no.lcv": ["parent", "purchase_receipt","supplier","posting_date","total_amountxd"],
+		"no.lcv": ["parent","posting_date","total_amountxd"],
 		"purchase_receipt": ["parent", "purchase_receipt","supplier","posting_date","total_amountxd"],
 		"item_code": ["parent", "item_code","supplier","posting_date","total_amountxd"]
 
