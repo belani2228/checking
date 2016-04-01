@@ -1,25 +1,13 @@
 // Copyright (c) 2016, molie and contributors
 // For license information, please see license.txt
 
-frappe.query_reports["Recheck Delivery Note"] = {
+frappe.query_reports["Recheck Purchase Invoice LCV"] = {
 	"filters": [
 		{
-			"fieldname": "delivery_note",
-					"label": __("Delivery Note"),
+			"fieldname": "purchase_invoice",
+					"label": __("Purchase Invoice"),
 					"fieldtype": "Link",
-					"options": "Delivery Note"
-		},
-		{
-			"fieldname": "customer_group",
-					"label": __("Customer Group"),
-					"fieldtype": "Link",
-					"options": "Customer Group"
-		},
-		{
-			"fieldname": "territory",
-					"label": __("Territory"),
-					"fieldtype": "Link",
-					"options": "Territory"
+					"options": "Purchase Invoice"
 		},
 		{
 			"fieldname":"from_date",
@@ -36,11 +24,17 @@ frappe.query_reports["Recheck Delivery Note"] = {
 			"default": frappe.datetime.month_end()
 		},
 		{
+			"fieldname": "supplier",
+			"label": __("Supplier"),
+			"fieldtype": "Link",
+			"options": "Supplier"
+		},
+		{
 			"fieldname":"entry_type",
 			"label": __("Status"),
 			"fieldtype": "Select",
-			"options": " \nDraft\nTo Bill\nCompleted\nReturn",
+			"options": " \nDraft\nOverdue\nPaid",
 			"default": "Draft"
-		}
+		},
 	]
 }

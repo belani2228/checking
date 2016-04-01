@@ -84,6 +84,14 @@ def get_conditions(filters):
 	if filters.get("to_date"):
 		conditions += "and pr1.posting_date <= '%s'" % filters["to_date"]
 
+	if filters.get("entry_type") == "Draft":
+		conditions += "and pr1.docstatus = '0' and pr1.is_return = '0'"
+	elif filters.get("entry_type") == "To Bill":
+		conditions += "and pr1.docstatus = '1' and pr1.is_return = '0' and pr1.per_billed < '100'"
+	elif filters.get("entry_type") == "Completed":
+		conditions += "and pr1.docstatus = '1' and pr1.is_return = '0' and pr1.per_billed = '100'"
+	elif filters.get("entry_type") == "Return":
+		conditions += "and pr1.is_return = '1'"
+	else:
+		conditions += "and pr1.per_billed <= '100'"
 	return conditions
-
-	

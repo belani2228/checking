@@ -47,6 +47,13 @@ frappe.query_reports["Recheck Sales Invoice Item"] = {
 			"label": __("Cost Center"),
 			"fieldtype": "Link",
 			"options": "Cost Center"
+		},
+		{
+			"fieldname":"entry_type",
+			"label": __("Status"),
+			"fieldtype": "Select",
+			"options": " \nDraft\nOverdue\nPaid",
+			"default": "Draft"
 		}
 	]
 }

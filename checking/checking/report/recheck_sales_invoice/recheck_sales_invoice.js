@@ -41,6 +41,13 @@ frappe.query_reports["Recheck Sales Invoice"] = {
 			"label": __("Territory"),
 			"fieldtype": "Link",
 			"options": "Territory"
-		}
+		},
+		{
+			"fieldname":"entry_type",
+			"label": __("Status"),
+			"fieldtype": "Select",
+			"options": " \nDraft\nOverdue\nPaid",
+			"default": "Draft"
+		},
 	]
 }

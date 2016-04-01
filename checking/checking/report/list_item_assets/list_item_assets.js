@@ -3,6 +3,12 @@
 
 frappe.query_reports["List Item Assets"] = {
 	"filters": [
-
+		{
+			"fieldname":"entry_type",
+			"label": __("Status"),
+			"fieldtype": "Select",
+			"options": "Disabled\nEnabled",
+			"default": "Disabled"
+		}
 	]
 }

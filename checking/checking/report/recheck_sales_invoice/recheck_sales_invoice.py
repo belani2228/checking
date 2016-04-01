@@ -93,4 +93,13 @@ def get_conditions(filters):
 	if filters.get("territory"):
 		conditions += "and si2.territory = '%s'" % filters["territory"]
 
+	if filters.get("entry_type") == "Draft":
+		conditions += "and si2.docstatus = '0'"
+	elif filters.get("entry_type") == "Paid":
+		conditions += "and si2.docstatus = '1' and si2.outstanding_amount = '0'"
+	elif filters.get("entry_type") == "Overdue":
+		conditions += "and si2.docstatus = '1' and si2.outstanding_amount != '0'"
+	else:
+		conditions += "and (si2.docstatus = '1' or si2.docstatus = '0')"
+
 	return conditions

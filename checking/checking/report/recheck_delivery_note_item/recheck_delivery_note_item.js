@@ -40,6 +40,13 @@ frappe.query_reports["Recheck Delivery Note Item"] = {
 			"label": __("Cost Center"),
 			"fieldtype": "Link",
 			"options": "Cost Center"
+		},
+		{
+			"fieldname":"entry_type",
+			"label": __("Status"),
+			"fieldtype": "Select",
+			"options": " \nDraft\nTo Bill\nCompleted\nReturn",
+			"default": "Draft"
 		}
 	]
 }

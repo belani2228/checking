@@ -23,5 +23,12 @@ frappe.query_reports["Recheck Purchase Receipt"] = {
 			"width": "80",
 			"default": frappe.datetime.month_end()
 		},
+		{
+			"fieldname":"entry_type",
+			"label": __("Status"),
+			"fieldtype": "Select",
+			"options": " \nDraft\nTo Bill\nCompleted\nReturn",
+			"default": "Draft"
+		}
 	]
 }

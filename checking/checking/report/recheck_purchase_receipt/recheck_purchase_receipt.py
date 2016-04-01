@@ -23,6 +23,7 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + ":Data:80",
+		_("Document") + "::100",
 		_("No.Purchase Receipt")+":Link/Purchase Receipt:150",
 		_("Supplier Name") + ":Link/Supplier:300",
 		_("Posting Date") + ":Date:100",
@@ -47,9 +48,24 @@ def get_recheck_purchase_receipt(filters):
 	#return frappe.db.sql("""select item_name,item_group,stock_uom,expense_account,income_account,has_variants,is_purchase_item,is_sales_item,is_asset_item,is_sub_contracted_item from tabItem where has_variants = '0' and item_group = 'layanan' %s""" % conditions, as_list=1)
 	return frappe.db.sql(
 		"""select
-				status,name,supplier,posting_date,posting_time,transporter_name,lr_date,lr_no,
-				currency,conversion_rate,net_total,base_total,base_rounded_total,creation,owner,
-				modified,modified_by
+				status,
+				if(is_return = 1,"Return","Delivery Note"),
+				name,
+				supplier,
+				posting_date,
+				posting_time,
+				transporter_name,
+				lr_date,
+				lr_no,
+				currency,
+				conversion_rate,
+				net_total,
+				base_total,
+				base_rounded_total,
+				creation,
+				owner,
+				modified,
+				modified_by
 		   from
 		   		`tabPurchase Receipt`
 		   where
@@ -58,17 +74,23 @@ def get_recheck_purchase_receipt(filters):
 
 def get_conditions(filters):
 	conditions = ""
-	#value = []
 	if filters.get("from_date"):
-		#conditions += "and posting_date >= '%s'" % frappe.db.escape(filters["from_date"])
 		conditions += "and posting_date >= '%s'" % filters["from_date"]
 
 	if filters.get("to_date"):
-
-		#conditions += "and posting_date <= '%s'" % frappe.db.escape(filters["to_date"])
 		conditions += "and posting_date <= '%s'" % filters["to_date"]
 
 	if filters.get("purchase_receipt"):
 		conditions += "and name = '%s'" % filters["purchase_receipt"]
 
+	if filters.get("entry_type") == "Draft":
+		conditions += "and docstatus = '0' and is_return = '0'"
+	elif filters.get("entry_type") == "To Bill":
+		conditions += "and docstatus = '1' and is_return = '0' and per_billed < '100'"
+	elif filters.get("entry_type") == "Completed":
+		conditions += "and docstatus = '1' and is_return = '0' and per_billed = '100'"
+	elif filters.get("entry_type") == "Return":
+		conditions += "and is_return = '1'"
+	else:
+		conditions += "and per_billed <= '100'"
 	return conditions

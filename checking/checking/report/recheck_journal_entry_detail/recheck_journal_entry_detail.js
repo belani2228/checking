@@ -51,6 +51,11 @@ frappe.query_reports["Recheck Journal Entry Detail"] = {
 			"fieldtype": "Link",
 			"options": "Cost Center"
 		},
-
+		{
+			"fieldname":"entry_document",
+			"label": __("Status"),
+			"fieldtype": "Select",
+			"options": " \nDraft\nSubmit"
+		}
 	]
 }

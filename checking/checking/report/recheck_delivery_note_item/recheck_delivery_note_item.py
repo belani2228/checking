@@ -78,7 +78,14 @@ def get_conditions(filters):
 	if filters.get("cost_center"):
 		conditions += "and dn2.cost_center = '%s'" % filters["cost_center"]
 
+	if filters.get("entry_type") == "Draft":
+		conditions += "and dn1.docstatus = '0' and dn1.is_return = '0'"
+	elif filters.get("entry_type") == "To Bill":
+		conditions += "and dn1.docstatus = '1' and dn1.is_return = '0' and dn1.per_billed < '100'"
+	elif filters.get("entry_type") == "Completed":
+		conditions += "and dn1.docstatus = '1' and dn1.is_return = '0' and dn1.per_billed = '100'"
+	elif filters.get("entry_type") == "Return":
+		conditions += "and dn1.is_return = '1'"
+	else:
+		conditions += "and dn1.per_billed <= '100'"
 	return conditions
-
-		#if filters.get("company"): conditions += " and company = '%s'" % \
-		#	filters["company"].replace("'", "\\'")

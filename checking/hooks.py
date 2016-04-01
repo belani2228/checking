@@ -8,7 +8,7 @@ app_description = "app for checking data"
 app_icon = "octicon octicon-database"
 app_color = "#F0465C"
 app_email = "cuknoris@gmail.com"
-app_version = "0.0.1"
+app_version = "0.0.2"
 app_license = "Copyright ABCFruit 2016"
 
 # Includes in <head>
@@ -110,4 +110,3 @@ app_license = "Copyright ABCFruit 2016"
 # override_whitelisted_methods = {
 # 	"frappe.desk.doctype.event.event.get_events": "checking.event.get_events"
 # }
-

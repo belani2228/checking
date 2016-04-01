@@ -110,4 +110,13 @@ def get_conditions(filters):
 	if filters.get("to_date"):
 		conditions += "and si1.posting_date <= '%s'" % filters["to_date"]
 
+	if filters.get("entry_type") == "Draft":
+		conditions += "and si1.docstatus = '0'"
+	elif filters.get("entry_type") == "Paid":
+		conditions += "and si1.docstatus = '1' and si1.outstanding_amount = '0'"
+	elif filters.get("entry_type") == "Overdue":
+		conditions += "and si1.docstatus = '1' and si1.outstanding_amount != '0'"
+	else:
+		conditions += "and (si1.docstatus = '1' or si1.docstatus = '0')"
+
 	return conditions

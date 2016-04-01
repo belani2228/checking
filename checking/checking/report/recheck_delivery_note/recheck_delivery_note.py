@@ -17,6 +17,7 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + ":Data:80",
+		_("Document") + "::100",
 		_("No.Delivery Note")+":Link/Delivery Note:100",
 		_("Customer Name") + ":Link/Customer:300",
 		_("Customer Group") + ":Link/Customer Group:120",
@@ -44,9 +45,22 @@ def get_recheck_delivery_note(filters):
 	return frappe.db.sql(
 
 		"""select
-				status,name,customer,customer_group,territory,posting_date,posting_time,
-				transporter_name,lr_date,lr_no,currency,conversion_rate,net_total,
-				base_total,base_rounded_total,creation,owner,
+				status,
+				if(is_return = 1,"Return","Delivery Note"),
+				name,customer,
+				customer_group,
+				territory,
+				posting_date,
+				posting_time,
+				transporter_name,
+				lr_date,
+				lr_no,
+				currency,
+				conversion_rate,
+				net_total,
+				base_total,
+				base_rounded_total,
+				creation,owner,
 				modified,modified_by
 		   from
 		   		`tabDelivery Note`
@@ -57,7 +71,6 @@ def get_recheck_delivery_note(filters):
 
 def get_conditions(filters):
 	conditions = ""
-	#value = []
 	if filters.get("delivery_note"):
 		conditions += "and name = '%s'" % filters["delivery_note"]
 
@@ -68,16 +81,19 @@ def get_conditions(filters):
 		conditions += "and territory = '%s'" % filters["territory"]
 
 	if filters.get("from_date"):
-		#conditions += "and posting_date >= '%s'" % frappe.db.escape(filters["from_date"])
 		conditions += "and posting_date >= '%s'" % filters["from_date"]
 
 	if filters.get("to_date"):
-
-		#conditions += "and posting_date <= '%s'" % frappe.db.escape(filters["to_date"])
 		conditions += "and posting_date <= '%s'" % filters["to_date"]
 
-
+	if filters.get("entry_type") == "Draft":
+		conditions += "and docstatus = '0' and is_return = '0'"
+	elif filters.get("entry_type") == "To Bill":
+		conditions += "and docstatus = '1' and is_return = '0' and per_billed < '100'"
+	elif filters.get("entry_type") == "Completed":
+		conditions += "and docstatus = '1' and is_return = '0' and per_billed = '100'"
+	elif filters.get("entry_type") == "Return":
+		conditions += "and is_return = '1'"
+	else:
+		conditions += "and per_billed <= '100'"
 	return conditions
-
-		#if filters.get("company"): conditions += " and company = '%s'" % \
-		#	filters["company"].replace("'", "\\'")

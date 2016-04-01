@@ -1,7 +1,7 @@
 // Copyright (c) 2016, molie and contributors
 // For license information, please see license.txt
 
-frappe.query_reports["Recheck Purchase Invoice Item"] = {
+frappe.query_reports["Recheck Purchase Invoice LCV Item"] = {
 	"filters": [
 		{
 			"fieldname": "purchase_invoice",

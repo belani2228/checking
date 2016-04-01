@@ -29,6 +29,12 @@ frappe.query_reports["Recheck Journal Entry"] = {
 			"fieldtype": "Date",
 			"width": "80",
 			"default": frappe.datetime.month_end()
+		},
+		{
+			"fieldname":"entry_document",
+			"label": __("Status"),
+			"fieldtype": "Select",
+			"options": " \nDraft\nSubmit"
 		}
 	]
 }

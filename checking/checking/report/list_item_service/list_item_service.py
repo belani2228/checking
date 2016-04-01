@@ -27,7 +27,6 @@ def get_columns():
 		_("Is Sales Item") + ":Data:80",
 		_("Is Asset Item") + ":Data:80",
 		_("Is Sub Contracted Item") + ":Data:80"
-
 	]
 
 def get_list_item_service(filters):
@@ -49,11 +48,14 @@ def get_list_item_service(filters):
 		where
 			has_variants = '0'
 			and item_group = 'layanan' %s
-		""" % conditions, as_list=1)
+		order by
+			item_code asc,item_name asc
+			""" %conditions, as_list=1)
 
 def get_conditions(filters):
 	conditions = ""
-	if filters.get("item_group"):
-		conditions += " and item_group = '%s'" % filters["item_group"]
-
+	if filters.get("entry_type") == "Disabled":
+		conditions += "and disabled = '1'"
+	else:
+		conditions += "and disabled = '0'"
 	return conditions

@@ -51,10 +51,21 @@ def get_recheck_journal_entry(filters):
 		   		jv1.docstatus < 2
 				and jv1.is_opening = 'No'
 				%s
+		   order by
+		   		jv1.name desc, jv1.posting_date desc
+
 		""" % conditions, as_list=1)
 
 def get_conditions(filters):
 	conditions = ""
+
+	if filters.get("entry_document") == "Draft":
+		conditions += "and jv1.docstatus = '0'"
+	elif filters.get("entry_document") == "Submit":
+		conditions += "and jv1.docstatus = '1'"
+	else:
+		conditions += ""
+
 	if filters.get("from_date"):
 		conditions += "and jv1.posting_date >= '%s'" % filters["from_date"]
 	if filters.get("to_date"):
@@ -62,17 +73,18 @@ def get_conditions(filters):
 	if filters.get("journal_entry"):
 		conditions += "and jv1.name = '%s'" % filters["journal_entry"]
 	if filters.get("entry_type") == "Write Off Entry":
-		conditions += "and jv1.voucher_type = 'Write Off Entry' order by jv1.name desc, jv1.posting_date desc"
+		conditions += "and jv1.voucher_type = 'Write Off Entry'"
 	elif filters.get("entry_type") == "Journal Entry":
-		conditions += "and jv1.voucher_type = 'Journal Entry' order by jv1.name desc, jv1.posting_date desc"
+		conditions += "and jv1.voucher_type = 'Journal Entry'"
 	elif filters.get("entry_type") == "Cash Entry":
-		conditions += "and jv1.voucher_type = 'Cash Entry' order by jv1.name desc, jv1.posting_date desc"
+		conditions += "and jv1.voucher_type = 'Cash Entry'"
 	elif filters.get("entry_type") == "Bank Entry":
-		conditions += "and jv1.voucher_type = 'Bank Entry' order by jv1.name desc, jv1.posting_date desc"
+		conditions += "and jv1.voucher_type = 'Bank Entry'"
 	elif filters.get("entry_type") == "Debit Note":
-		conditions += "and jv1.voucher_type = 'Debit Note' order by jv1.name desc, jv1.posting_date desc"
+		conditions += "and jv1.voucher_type = 'Debit Note'"
 	elif filters.get("entry_type") == "Credit Note":
-		conditions += "and jv1.voucher_type = 'Credit Note' order by jv1.name desc, jv1.posting_date desc"
+		conditions += "and jv1.voucher_type = 'Credit Note'"
 	else:
-		conditions += "order by jv1.name desc, jv1.posting_date desc"
+		conditions += ""
+
 	return conditions

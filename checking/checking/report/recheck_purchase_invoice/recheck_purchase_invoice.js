@@ -35,7 +35,14 @@ frappe.query_reports["Recheck Purchase Invoice"] = {
 			"fieldtype": "Link",
 			"options": "Supplier Type",
 			"default": "Service"
-		}
+		},
+		{
+			"fieldname":"entry_type",
+			"label": __("Status"),
+			"fieldtype": "Select",
+			"options": " \nDraft\nOverdue\nPaid",
+			"default": "Draft"
+		},
 
 	]
 }

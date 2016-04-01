@@ -74,12 +74,16 @@ def get_recheck_purchase_invoice_item(filters):
 		   		`tabPurchase Invoice Item` pi2
 				inner join `tabPurchase Invoice` pi1
 				inner join `tabSupplier` s1
+
 		   where
 		   		pi2.parent = pi1.name
 				and s1.name = pi1.supplier
+			
 				and pi1.docstatus <2
 				and pi2.docstatus < 2
-				and pi1.is_opening = "No"%s
+				and pi1.is_opening = "No"
+				and s1.supplier_type = "Service"
+				%s
 		   order by
 		   		pi1.posting_date desc,
 				pi2.parent desc

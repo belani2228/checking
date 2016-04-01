@@ -31,7 +31,7 @@ def get_columns():
 	]
 
 def get_list_item_product(filters):
-	#return frappe.db.sql("""select item_name,item_group,stock_uom,expense_account,income_account,has_variants,is_purchase_item,is_sales_item,is_asset_item,is_sub_contracted_item from tabItem where has_variants = '0' and item_group = 'layanan' %s""" % conditions, as_list=1)
+	conditions = get_conditions(filters)
 	return frappe.db.sql("""
 		select
 			item_code,
@@ -48,4 +48,16 @@ def get_list_item_product(filters):
 		from
 			`tabItem`
 		where
-			item_group = 'bahan baku' and is_asset_item = 1""", as_list=1)
+			item_group = 'bahan baku'
+			and is_asset_item = 1 %s
+		order by
+			item_code asc,item_name asc
+			""" %conditions, as_list=1)
+
+def get_conditions(filters):
+	conditions = ""
+	if filters.get("entry_type") == "Disabled":
+		conditions += "and disabled = '1'"
+	else:
+		conditions += "and disabled = '0'"
+	return conditions
