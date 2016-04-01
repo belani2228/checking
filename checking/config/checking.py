@@ -52,6 +52,12 @@ def get_data():
 					"name": "Check Error Delivery Note Item",
 					"doctype": "Report Center",
 					"is_query_report": True,
+				},
+				{
+					"type": "report",
+					"name": "Check Error Landed Cost Voucher",
+					"doctype": "Report Center",
+					"is_query_report": True,
 				}
 			]
 		},
@@ -80,6 +86,18 @@ def get_data():
 				{
 					"type": "report",
 					"name": "Recheck Purchase Invoice Item",
+					"doctype": "Report Center",
+					"is_query_report": True,
+				},
+				{
+					"type": "report",
+					"name": "Recheck Purchase Invoice LCV",
+					"doctype": "Report Center",
+					"is_query_report": True,
+				},
+				{
+					"type": "report",
+					"name": "Recheck Purchase Invoice LCV Item",
 					"doctype": "Report Center",
 					"is_query_report": True,
 				},
