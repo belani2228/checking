@@ -94,4 +94,24 @@ def get_conditions(filters):
 		conditions += "and pr1.is_return = '1'"
 	else:
 		conditions += "and pr1.per_billed <= '100'"
+
+	if ((filters.get("recheck_warehouse") is not None) and (filters.get("warehouse") is not None)) :
+		 frappe.throw(_("please, don't fill 'warehouse' filter if you use 'recheck warehouse if input wrong cost center' filter"))
+
+	if filters.get("recheck_warehouse") == "Gudang Buah-Dadap":
+		conditions += "and (pr2.warehouse = 'Gudang Buah - Dadap - ABC' and pr2.cost_center != 'Buah/Jakarta - ABC')"
+	elif filters.get("recheck_warehouse") == "Gudang Bawang-Dadap":
+		conditions += "and (pr2.warehouse = 'Gudang Bawang - Dadap - ABC' and pr2.cost_center != 'Bawang/Jakarta - ABC')"
+	elif filters.get("recheck_warehouse") == "Gudang Suri":
+		conditions += "and (pr2.warehouse = 'Gudang Suri - ABC' and pr2.cost_center != 'AKS - ABC') and (pr2.warehouse = 'Gudang Suri - ABC' and pr2.cost_center != 'Sarden - ABC')"
+	elif filters.get("recheck_warehouse") == "Toko Puspa":
+		conditions += "and (pr2.warehouse = 'Toko Puspa - ABC' and pr2.cost_center != 'Puspa - ABC')"
+	elif filters.get("recheck_warehouse") == "Toko Pios":
+		conditions += "and (pr2.warehouse = 'Toko Pios - ABC' and pr2.cost_center != 'Pios - ABC')"
+	elif filters.get("recheck_warehouse") == "Toko Songoyudan":
+		conditions += "and (pr2.warehouse = 'Toko Songoyudan - ABC' and pr2.cost_center != 'Songoyudan - ABC')"
+	else:
+		conditions += ""
+	return conditions
+
 	return conditions

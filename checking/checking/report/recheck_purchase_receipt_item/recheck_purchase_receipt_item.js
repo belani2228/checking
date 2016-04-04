@@ -47,6 +47,12 @@ frappe.query_reports["Recheck Purchase Receipt Item"] = {
 			"fieldtype": "Select",
 			"options": " \nDraft\nTo Bill\nCompleted\nReturn",
 			"default": "Draft"
+		},
+		{
+			"fieldname":"recheck_warehouse",
+			"label": __("recheck warehouse if input wrong cost center"),
+			"fieldtype": "Select",
+			"options": " \nGudang Buah-Dadap\nGudang Bawang-Dadap\nGudang Suri\nToko Pios\nToko Puspa\nToko Songoyudan",
 		}
 	]
 	}
