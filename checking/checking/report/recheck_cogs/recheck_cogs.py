@@ -56,31 +56,30 @@ def get_recheck_cogs(filters):
 			pr2.warehouse,pr2.item_group,pr2.cost_center
 	   from
 			`tabPurchase Receipt Item` pr2 inner join `tabPurchase Receipt` pr1
-
 	   where
 			pr2.parent = pr1.name and pr2.docstatus < 2 %s order by pr1.posting_date desc,pr1.posting_time desc,pr2.parent desc
 	""" % conditions, as_list=1)
 
-
 def get_conditions(filters):
 	conditions = ""
-	#value = []
 	if filters.get("purchase_receipt"):
 		conditions += "and pr2.parent = '%s'" % filters["purchase_receipt"]
-
 	if filters.get("item_group"):
 		conditions += "and pr2.item_group = '%s'" % filters["item_group"]
-
 	if filters.get("warehouse"):
 		conditions += "and pr2.warehouse = '%s'" % filters["warehouse"]
-
 	if filters.get("from_date"):
 		conditions += "and pr1.posting_date >= '%s'" % filters["from_date"]
-
 	if filters.get("to_date"):
 		conditions += "and pr1.posting_date <= '%s'" % filters["to_date"]
-
+	if filters.get("entry_type") == "Draft":
+		conditions += "and pr1.docstatus = '0' and pr1.is_return = '0'"
+	elif filters.get("entry_type") == "To Bill":
+		conditions += "and pr1.docstatus = '1' and pr1.is_return = '0' and pr1.per_billed < '100'"
+	elif filters.get("entry_type") == "Completed":
+		conditions += "and pr1.docstatus = '1' and pr1.is_return = '0' and pr1.per_billed = '100'"
+	elif filters.get("entry_type") == "Return":
+		conditions += "and pr1.is_return = '1'"
+	else:
+		conditions += "and pr1.per_billed <= '100'"
 	return conditions
-
-		#if filters.get("company"): conditions += " and company = '%s'" % \
-		#	filters["company"].replace("'", "\\'")

@@ -34,6 +34,13 @@ frappe.query_reports["Recheck COGS"] = {
 			"label": __("Item Group"),
 			"fieldtype": "Link",
 			"options": "Item Group"
+		},
+		{
+			"fieldname":"entry_type",
+			"label": __("Status"),
+			"fieldtype": "Select",
+			"options": " \nDraft\nTo Bill\nCompleted\nReturn",
+			"default": "Draft"
 		}
 	]
 	}

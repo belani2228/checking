@@ -42,9 +42,6 @@ def get_columns():
 
 def get_recheck_delivery_note(filters):
 	conditions = get_conditions(filters)
-	#return frappe.db.sql("""select item_name,item_group,stock_uom,expense_account,income_account,has_variants,is_purchase_item,is_sales_item,is_asset_item,is_sub_contracted_item from tabItem where has_variants = '0' and item_group = 'layanan' %s""" % conditions, as_list=1)
-	#return frappe.db.sql("""select parent,item_code,item_name,item_group,packing_qty,packing_uom,conversion_factor,qty,stock_uom,rate,amount,warehouse,expense_account,cost_center,creation,owner,modified,modified_by from `tabDelivery Note Item` where docstatus < 2 %s""" % conditions, as_list=1)
-	#return frappe.db.sql("""select `tabPurchase Receipt`.status,`tabPurchase Receipt`.name,`tabPurchase Receipt`.supplier,`tabPurchase Receipt`.company,`tabPurchase Receipt`.posting_date,`tabPurchase Receipt`.posting_time,`tabPurchase Receipt`.transporter_name,`tabPurchase Receipt`.lr_date,`tabPurchase Receipt`.lr_no,`tabPurchase Receipt`.currency,`tabPurchase Receipt`.price_list_currency,`tabPurchase Receipt`.conversion_rate,`tabPurchase Receipt`.base_net_total,concat(`tabCurrency`.symbol," ",`tabPurchase Receipt`.base_grand_total),`tabPurchase Receipt`.net_total,`tabPurchase Receipt`.base_total,`tabPurchase Receipt`.base_rounded_total from `tabPurchase Receipt` inner join `tabCurrency` on `tabPurchase Receipt`.currency = `tabCurrency`.name where `tabPurchase Receipt`.docstatus < 2 %s""" % conditions, as_list=1)
 	return frappe.db.sql(
 		"""select
 				dn1.status,dn2.parent,dn1.posting_date,dn2.item_code,dn2.item_name,dn2.item_group,dn2.packing_qty,dn2.packing_uom,dn2.conversion_factor,
@@ -88,4 +85,23 @@ def get_conditions(filters):
 		conditions += "and dn1.is_return = '1'"
 	else:
 		conditions += "and dn1.per_billed <= '100'"
+
+	if ((filters.get("recheck_warehouse") is not None) and (filters.get("warehouse") is not None)) :
+		 frappe.throw(_("please, don't fill 'warehouse' filter if you use 'recheck warehouse if input wrong cost center' filter"))
+
+	if filters.get("recheck_warehouse") == "Gudang Buah-Dadap":
+		conditions += "and (dn2.warehouse = 'Gudang Buah - Dadap - ABC' and dn2.cost_center != 'Buah/Jakarta - ABC')"
+	elif filters.get("recheck_warehouse") == "Gudang Bawang-Dadap":
+		conditions += "and (dn2.warehouse = 'Gudang Bawang - Dadap - ABC' and dn2.cost_center != 'Bawang/Jakarta - ABC')"
+	elif filters.get("recheck_warehouse") == "Gudang Suri":
+		conditions += "and (dn2.warehouse = 'Gudang Suri - ABC' and dn2.cost_center != 'AKS - ABC') and (dn2.warehouse = 'Gudang Suri - ABC' and dn2.cost_center != 'Sarden - ABC')"
+	elif filters.get("recheck_warehouse") == "Toko Puspa":
+		conditions += "and (dn2.warehouse = 'Toko Puspa - ABC' and dn2.cost_center != 'Puspa - ABC')"
+	elif filters.get("recheck_warehouse") == "Toko Pios":
+		conditions += "and (dn2.warehouse = 'Toko Pios - ABC' and dn2.cost_center != 'Pios - ABC')"
+	elif filters.get("recheck_warehouse") == "Toko Songoyudan":
+		conditions += "and (dn2.warehouse = 'Toko Songoyudan - ABC' and dn2.cost_center != 'Songoyudan - ABC')"
+	else:
+		conditions += ""
+
 	return conditions

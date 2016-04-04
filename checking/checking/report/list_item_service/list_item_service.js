@@ -8,7 +8,7 @@ frappe.query_reports["List Item Service"] = {
 			"label": __("Status"),
 			"fieldtype": "Select",
 			"options": "Disabled\nEnabled",
-			"default": "Disabled"
+			"default": "Enabled"
 		}
 	]
 }

@@ -49,7 +49,7 @@ def get_recheck_purchase_receipt(filters):
 	return frappe.db.sql(
 		"""select
 				status,
-				if(is_return = 1,"Return","Delivery Note"),
+				if(is_return = 1,"Return","Purchase Receipt"),
 				name,
 				supplier,
 				posting_date,
