@@ -62,7 +62,7 @@ def get_data():
 			]
 		},
 		{
-			"label": _("Recheck"),
+			"label": _("Recheck Purchase"),
 			"icon": "icon-flag",
 			"items": [
 				{
@@ -101,6 +101,30 @@ def get_data():
 					"doctype": "Report Center",
 					"is_query_report": True,
 				},
+			]
+		},
+		{
+			"label": _("Report Landed Cost"),
+			"icon": "icon-table",
+			"items": [
+				{
+					"type": "report",
+					"name": "Recheck Landed Cost Voucher",
+					"doctype": "Report Center",
+					"is_query_report": True,
+				},
+				{
+					"type": "report",
+					"name": "Recheck Landed Cost Voucher Item",
+					"doctype": "Report Center",
+					"is_query_report": True,
+				},
+			]
+		},
+		{
+			"label": _("Report Sales"),
+			"icon": "icon-table",
+			"items": [
 				{
 					"type": "report",
 					"name": "Recheck Delivery Note",
@@ -115,18 +139,6 @@ def get_data():
 				},
 				{
 					"type": "report",
-					"name": "Recheck Landed Cost Voucher",
-					"doctype": "Report Center",
-					"is_query_report": True,
-				},
-				{
-					"type": "report",
-					"name": "Recheck Landed Cost Voucher Item",
-					"doctype": "Report Center",
-					"is_query_report": True,
-				},
-				{
-					"type": "report",
 					"name": "Recheck Sales Invoice",
 					"doctype": "Report Center",
 					"is_query_report": True,
@@ -136,13 +148,25 @@ def get_data():
 					"name": "Recheck Sales Invoice Item",
 					"doctype": "Report Center",
 					"is_query_report": True,
-				},
+				}
+			]
+		},
+		{
+			"label": _("Report COGS"),
+			"icon": "icon-table",
+			"items": [
 				{
 					"type": "report",
 					"name": "Recheck COGS",
 					"doctype": "Report Center",
 					"is_query_report": True,
 				},
+			]
+		},
+		{
+			"label": _("Report Journal"),
+			"icon": "icon-table",
+			"items": [
 				{
 					"type": "report",
 					"name": "Recheck Journal Entry",
@@ -156,5 +180,6 @@ def get_data():
 					"is_query_report": True,
 				},
 			]
-		}
+		},
+
 	]
