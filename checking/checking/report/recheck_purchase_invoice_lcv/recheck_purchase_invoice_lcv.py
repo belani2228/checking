@@ -16,7 +16,7 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + "::80",
-		_("Supplier Type") + "::80",
+		_("SupplierType") + "::80",
 		_("No.Purchase Invoice")+":Link/Purchase Invoice:150",
 		_("Supplier Name") + ":Link/Supplier:300",
 		_("Posting Date") + ":Date:100",

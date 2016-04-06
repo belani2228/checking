@@ -23,7 +23,7 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + ":Data:80",
-		_("Document") + "::100",
+		_("Document") + "::120",
 		_("No.Purchase Receipt")+":Link/Purchase Receipt:150",
 		_("Supplier Name") + ":Link/Supplier:300",
 		_("Posting Date") + ":Date:100",
@@ -31,7 +31,7 @@ def get_columns():
 		_("No.Document") + ":Data:120",
 		_("Document Date") + ":Date:100",
 		_("No.Vehicle") + ":Data:100",
-		_("Currency") + ":Link/Currency:100",
+		_("Currency") + ":Data:100",
 		_("Rate (IDR to Other)") + ":Currency:120",
 		_("Amount") + ":Currency/Currency:120",
 		_("Amount (IDR)") + ":Currency:120",

@@ -36,5 +36,29 @@ frappe.query_reports["Recheck Journal Entry"] = {
 			"fieldtype": "Select",
 			"options": " \nDraft\nSubmit"
 		}
-	]
+	],
+	"formatter":function (row, cell, value, columnDef, dataContext, default_formatter) {
+						value = default_formatter(row, cell, value, columnDef, dataContext);
+						if (columnDef.id == "Status") {
+										if(dataContext.Status == "Draft"){
+												value = "<span style='color:red;font-weight:bold'>" + value + "</span>";
+										}else if(dataContext.Status == "Submit"){
+														value = "<span style='color:green;font-weight:bold'>" + value + "</span>";
+										}
+						}
+
+						if (columnDef.id == "VoucherType") {
+										if(dataContext.VoucherType == "Cash Entry"){
+												value = "<span style='color:#8B4513;font-weight:bold'>" + value + "</span>";
+										}else if(dataContext.VoucherType == "Bank Entry"){
+														value = "<span style='color:#000080;font-weight:bold'>" + value + "</span>";
+										}else if(dataContext.VoucherType == "Journal Entry"){
+											  value = "<span style='color:#006400;font-weight:bold'>" + value + "</span>";
+										}else  {
+											  value = "<span style='color:#000000;font-weight:bold'>" + value + "</span>";
+										}
+						}
+
+						return value;
+				}
 }

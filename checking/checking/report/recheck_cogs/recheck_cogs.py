@@ -17,6 +17,7 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + ":Data:80",
+		_("Document") + "::120",
 		_("No.Puchase Receipt")+":Link/Purchase Receipt:150",
 		_("Posting Date") + ":Date:100",
 		_("Supplier Name") + ":Link/Supplier:200",
@@ -46,7 +47,9 @@ def get_recheck_cogs(filters):
 	conditions = get_conditions(filters)
 	return frappe.db.sql(
 	"""select
-			pr1.status,pr2.parent,pr1.posting_date,pr1.supplier,pr2.item_code,pr2.item_name,
+			pr1.status,
+			if(is_return = 1,"Return","Purchase Receipt"),
+			pr2.parent,pr1.posting_date,pr1.supplier,pr2.item_code,pr2.item_name,
 			pr2.stock_qty,pr2.stock_uom,pr2.received_qty,
 			pr2.qty,pr2.uom,pr2.conversion_factor,pr1.currency,
 			pr2.rate,pr2.amount,

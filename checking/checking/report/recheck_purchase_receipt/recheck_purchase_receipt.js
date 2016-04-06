@@ -30,5 +30,19 @@ frappe.query_reports["Recheck Purchase Receipt"] = {
 			"options": " \nDraft\nTo Bill\nCompleted\nReturn",
 			"default": "Draft"
 		}
-	]
+	],
+	"formatter":function (row, cell, value, columnDef, dataContext, default_formatter) {
+						value = default_formatter(row, cell, value, columnDef, dataContext);
+						if (columnDef.id == "Status") {
+										if(dataContext.Status == "Draft"){
+												value = "<span style='color:red;font-weight:bold'>" + value + "</span>";
+										}else if(dataContext.Status == "Completed"){
+														value = "<span style='color:green;font-weight:bold'>" + value + "</span>";
+										}else  {
+											  value = "<span style='color:orange;font-weight:bold'>" + value + "</span>";
+										}
+						}
+						
+						return value;
+				}
 }

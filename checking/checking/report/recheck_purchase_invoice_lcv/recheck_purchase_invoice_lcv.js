@@ -36,5 +36,25 @@ frappe.query_reports["Recheck Purchase Invoice LCV"] = {
 			"options": " \nDraft\nOverdue\nPaid",
 			"default": "Draft"
 		},
-	]
+	],
+	"formatter":function (row, cell, value, columnDef, dataContext, default_formatter) {
+						value = default_formatter(row, cell, value, columnDef, dataContext);
+						if (columnDef.id == "Status") {
+										if(dataContext.Status == "Draft"){
+												value = "<span style='color:red;font-weight:bold'>" + value + "</span>";
+										}else if(dataContext.Status == "Paid"){
+														value = "<span style='color:green;font-weight:bold'>" + value + "</span>";
+										}else  {
+											  value = "<span style='color:orange;font-weight:bold'>" + value + "</span>";
+										}
+						}
+
+						if (columnDef.id == "SupplierType") {
+									if(dataContext.SupplierType == "Service"){
+														value = "<span style='color:#000080;font-weight:bold'>" + value + "</span>";
+									}
+						}
+
+						return value;
+				}
 }

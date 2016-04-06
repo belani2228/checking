@@ -16,7 +16,7 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + "::80",
-		_("Voucher Type") + "::100",
+		_("VoucherType") + "::100",
 		_("No.Journal Entry")+":Link/Journal Entry:150",
 		_("Posting Date") + ":Date:100",
 		_("Account") + "::300",

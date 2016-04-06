@@ -17,7 +17,7 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + ":Data:80",
-		_("Supplier Type") + "::80",
+		_("SupplierType") + "::80",
 		_("No.Puchase Invoice")+":Link/Purchase Invoice:120",
 		_("Posting Date") + ":Date:100",
 		_("Supplier Name") + ":Link/Supplier:200",
@@ -78,7 +78,7 @@ def get_recheck_purchase_invoice_item(filters):
 		   where
 		   		pi2.parent = pi1.name
 				and s1.name = pi1.supplier
-			
+
 				and pi1.docstatus <2
 				and pi2.docstatus < 2
 				and pi1.is_opening = "No"

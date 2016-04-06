@@ -16,14 +16,14 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + "::80",
-		_("Supplier Type") + "::80",
+		_("SupplierType") + "::80",
 		_("No.Purchase Invoice")+":Link/Purchase Invoice:150",
 		_("Supplier Name") + ":Link/Supplier:300",
 		_("Posting Date") + ":Date:100",
 		_("Due Date") + ":Date:100",
 		_("No.Document") + ":Data:120",
 		_("Document Date") + ":Date:100",
-		_("Currency") + ":Link/Currency:100",
+		_("Currency") + "::100",
 		_("Amount") + ":Currency/Currency:120",
 		_("Rate (IDR to Other)") + ":Currency:120",
 		_("Amount (IDR)") + ":Currency:120",
