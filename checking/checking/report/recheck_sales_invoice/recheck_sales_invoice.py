@@ -97,11 +97,12 @@ def get_conditions(filters):
 		conditions += "and (date(si2.posting_date) > date(si2.creation))"
 	elif filters.get("recheck_month") == "If Posting Date < Created Date":
 		conditions += "and (date(si2.posting_date) < date(si2.creation))"
-	elif filters.get("recheck_month") == "Error Input Year":
+	elif filters.get("recheck_month") == "Posting Date (Year) > Created Date (Year)":
 		if filters.get("from_date") is not None or filters.get("to_date") is not None:
 			frappe.throw(_("please, don't fill from date  and to date"))
-			
+
 		conditions += "and (year(si2.posting_date) > year(si2.creation))"
+
 	else:
 		conditions += ""
 

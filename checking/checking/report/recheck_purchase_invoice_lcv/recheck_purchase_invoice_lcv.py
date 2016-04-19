@@ -91,11 +91,17 @@ def get_conditions(filters):
 		conditions += "and (date(pi2.posting_date) > date(pi2.bill_date))"
 	elif filters.get("recheck_month") == "If Posting Date < Document Date":
 		conditions += "and (date(pi2.posting_date) < date(pi2.bill_date))"
-	elif filters.get("recheck_month") == "Error Input Year":
+	elif filters.get("recheck_month") == "Posting Date (Year) > Document Date (Year)":
 		if filters.get("from_date") is not None or filters.get("to_date") is not None:
 			frappe.throw(_("please, don't fill from date  and to date"))
-			
-		conditions += "and (year(pi2.posting_date) > year(pi2.creation)) or (year(pi2.posting_date) > year(pi2.bill_date))"
+
+		conditions += "and (year(pi2.posting_date) > year(pi2.bill_date))"
+	elif filters.get("recheck_month") == "Posting Date (Year) > Created Date (Year)":
+		if filters.get("from_date") is not None or filters.get("to_date") is not None:
+			frappe.throw(_("please, don't fill from date  and to date"))
+
+		conditions += "and (year(pi2.posting_date) > year(pi2.creation))"
+
 	else:
 		conditions += ""
 

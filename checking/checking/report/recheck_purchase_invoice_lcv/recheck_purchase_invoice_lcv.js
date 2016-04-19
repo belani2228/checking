@@ -40,7 +40,7 @@ frappe.query_reports["Recheck Purchase Invoice LCV"] = {
 			"fieldname":"recheck_month",
 			"label": __("Recheck Error Input Posting Date"),
 			"fieldtype": "Select",
-			"options": " \nIf Posting Date > Created Date\nIf Posting Date < Created Date\nIf Posting Date > Document Date\nIf Posting Date < Document Date\nError Input Year"
+			"options": " \nPosting Date > Created Date\nPosting Date < Created Date\nPosting Date > Document Date\nPosting Date < Document Date\nPosting Date (Year) > Document Date (Year)\nPosting Date (Year) > Created Date (Year)"
 		}
 	],
 	"formatter":function (row, cell, value, columnDef, dataContext, default_formatter) {

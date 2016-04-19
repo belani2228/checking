@@ -53,7 +53,7 @@ frappe.query_reports["Recheck Sales Invoice"] = {
 			"fieldname":"recheck_month",
 			"label": __("Recheck Error Input Posting Date"),
 			"fieldtype": "Select",
-			"options": " \nIf Posting Date > Created Date\nIf Posting Date < Created Date\nError Input Year"
+			"options": " \nPosting Date > Created Date\nPosting Date < Created Date\nPosting Date (Year) > Created Date (Year)"
 		}
 	],
 	"formatter":function (row, cell, value, columnDef, dataContext, default_formatter) {

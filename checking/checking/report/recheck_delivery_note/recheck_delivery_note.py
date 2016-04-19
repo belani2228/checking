@@ -94,13 +94,20 @@ def get_conditions(filters):
 		conditions += "and (date(posting_date) > date(lr_date))"
 	elif filters.get("recheck_month") == "If Posting Date < Vehicle Date":
 		conditions += "and (date(posting_date) < date(lr_date))"
-	elif filters.get("recheck_month") == "Error Input Year":
+	elif filters.get("recheck_month") == "Posting Date (Year) > Vehicle Date (Year)":
 		if filters.get("from_date") is not None or filters.get("to_date") is not None:
 			frappe.throw(_("please, don't fill from date  and to date"))
 
-		conditions += "and (year(posting_date) > year(creation)) or (year(posting_date) > year(lr_date))"
+		conditions += "and (year(posting_date) > year(lr_date))"
+	elif filters.get("recheck_month") == "Posting Date (Year) > Created Date (Year)":
+		if filters.get("from_date") is not None or filters.get("to_date") is not None:
+			frappe.throw(_("please, don't fill from date  and to date"))
+
+		conditions += "and (year(posting_date) > year(creation))"
+
 	else:
 		conditions += ""
+
 
 	if filters.get("entry_type") == "Draft":
 		conditions += "and docstatus = '0' and is_return = '0'"

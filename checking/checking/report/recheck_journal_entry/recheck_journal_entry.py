@@ -87,19 +87,26 @@ def get_conditions(filters):
 	else:
 		conditions += ""
 
-	if filters.get("recheck_month") == "If Posting Date > Created Date":
+	if filters.get("recheck_month") == "Posting Date > Created Date":
 		conditions += "and (date(jv1.posting_date) > date(jv1.creation))"
-	elif filters.get("recheck_month") == "If Posting Date < Created Date":
+	elif filters.get("recheck_month") == "Posting Date < Created Date":
 		conditions += "and (date(jv1.posting_date) < date(jv1.creation))"
-	elif filters.get("recheck_month") == "If Posting Date > Document Date":
+	elif filters.get("recheck_month") == "Posting Date > Document Date":
 		conditions += "and (date(jv1.posting_date) > date(jv1.cheque_date))"
-	elif filters.get("recheck_month") == "If Posting Date < Document Date":
+	elif filters.get("recheck_month") == "Posting Date < Document Date":
 		conditions += "and (date(jv1.posting_date) < date(jv1.cheque_date))"
-	elif filters.get("recheck_month") == "Error Input Year":
+
+	elif filters.get("recheck_month") == "Posting Date (Year) > Document Date (Year)":
 		if filters.get("from_date") is not None or filters.get("to_date") is not None:
 			frappe.throw(_("please, don't fill from date  and to date"))
 
-		conditions += "and (year(jv1.posting_date) > year(jv1.creation)) or (year(jv1.posting_date) > year(jv1.cheque_date))"
+		conditions += "and (year(jv1.posting_date) > year(jv1.cheque_date))"
+	elif filters.get("recheck_month") == "Posting Date (Year) > Created Date (Year)":
+		if filters.get("from_date") is not None or filters.get("to_date") is not None:
+			frappe.throw(_("please, don't fill from date  and to date"))
+
+		conditions += "and (year(jv1.posting_date) > year(jv1.creation))"
+
 	else:
 		conditions += ""
 
