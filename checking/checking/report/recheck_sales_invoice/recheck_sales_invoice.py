@@ -20,7 +20,7 @@ def get_columns():
 		_("No.Sales Invoice")+":Link/Sales Invoice:100",
 		_("Customer Name") + ":Link/Customer:300",
 		_("Territory") + ":Link/Territory:100",
-		_("Posting Date") + ":Date:100",
+		_("PostingDate") + ":Date:100",
 		_("Due Date") + ":Date:100",
 		#_("No.Document") + ":Data:120",
 		#_("Document Date") + ":Date:100",
@@ -32,10 +32,10 @@ def get_columns():
 		_("Outstanding Amount") + ":Currency/Currency:150",
 		_("Income Account") + "::180",
 		_("Receivable Account") + "::250",
-		_("Created Date") + ":Datetime:150",
-		_("Created By") + ":Data:200",
-		_("Modified Date") + ":Datetime:150",
-		_("Modified By") + ":Data:200"
+		_("CreatedDate") + ":Datetime:150",
+		_("CreatedBy") + ":Data:200",
+		_("ModifiedDate") + ":Datetime:150",
+		_("ModifiedBy") + ":Data:200"
 	]
 
 def get_recheck_sales_invoice(filters):
@@ -92,6 +92,18 @@ def get_conditions(filters):
 
 	if filters.get("territory"):
 		conditions += "and si2.territory = '%s'" % filters["territory"]
+
+	if filters.get("recheck_month") == "If Posting Date > Created Date":
+		conditions += "and (date(si2.posting_date) > date(si2.creation))"
+	elif filters.get("recheck_month") == "If Posting Date < Created Date":
+		conditions += "and (date(si2.posting_date) < date(si2.creation))"
+	elif filters.get("recheck_month") == "Error Input Year":
+		if filters.get("from_date") is not None or filters.get("to_date") is not None:
+			frappe.throw(_("please, don't fill from date  and to date"))
+			
+		conditions += "and (year(si2.posting_date) > year(si2.creation))"
+	else:
+		conditions += ""
 
 	if filters.get("entry_type") == "Draft":
 		conditions += "and si2.docstatus = '0'"

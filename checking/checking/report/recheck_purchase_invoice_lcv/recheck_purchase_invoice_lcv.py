@@ -19,19 +19,19 @@ def get_columns():
 		_("SupplierType") + "::80",
 		_("No.Purchase Invoice")+":Link/Purchase Invoice:150",
 		_("Supplier Name") + ":Link/Supplier:300",
-		_("Posting Date") + ":Date:100",
+		_("PostingDate") + ":Date:100",
 		_("Due Date") + ":Date:100",
 		_("No.Document") + ":Data:120",
-		_("Document Date") + ":Date:100",
+		_("DocumentDate") + ":Date:100",
 		_("Currency") + ":Link/Currency:100",
 		_("Amount") + ":Currency/Currency:120",
 		_("Rate (IDR to Other)") + ":Currency:120",
 		_("Amount (IDR)") + ":Currency:120",
 		_("Outstanding Amount") + ":Currency/Currency:150",
-		_("Created Date") + ":Datetime:150",
-		_("Created By") + ":Data:200",
-		_("Modified Date") + ":Datetime:150",
-		_("Modified By") + ":Data:200"
+		_("CreatedDate") + ":Datetime:150",
+		_("CreatedBy") + ":Data:200",
+		_("ModifiedDate") + ":Datetime:150",
+		_("ModifiedBy") + ":Data:200"
 	]
 
 
@@ -82,6 +82,22 @@ def get_conditions(filters):
 
 	if filters.get("supplier"):
 		conditions += "and pi2.supplier = '%s'" % filters["supplier"]
+
+	if filters.get("recheck_month") == "If Posting Date > Created Date":
+		conditions += "and (date(pi2.posting_date) > date(pi2.creation))"
+	elif filters.get("recheck_month") == "If Posting Date < Created Date":
+		conditions += "and (date(pi2.posting_date) < date(pi2.creation))"
+	elif filters.get("recheck_month") == "If Posting Date > Document Date":
+		conditions += "and (date(pi2.posting_date) > date(pi2.bill_date))"
+	elif filters.get("recheck_month") == "If Posting Date < Document Date":
+		conditions += "and (date(pi2.posting_date) < date(pi2.bill_date))"
+	elif filters.get("recheck_month") == "Error Input Year":
+		if filters.get("from_date") is not None or filters.get("to_date") is not None:
+			frappe.throw(_("please, don't fill from date  and to date"))
+			
+		conditions += "and (year(pi2.posting_date) > year(pi2.creation)) or (year(pi2.posting_date) > year(pi2.bill_date))"
+	else:
+		conditions += ""
 
 	if filters.get("entry_type") == "Draft":
 		conditions += "and pi2.docstatus = '0'"

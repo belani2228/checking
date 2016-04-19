@@ -18,16 +18,16 @@ def get_columns():
 	    _("Status") + "::80",
 		_("VoucherType") + "::100",
 		_("No.Journal Entry")+":Link/Journal Entry:150",
-		_("Posting Date") + ":Date:100",
+		_("PostingDate") + ":Date:100",
 		_("No.Document") + ":Data:120",
-		_("Document Date") + ":Date:100",
+		_("DocumentDate") + ":Date:100",
 		_("Remarks") + "::300",
 		_("Debit") + ":Currency/Currency:120",
 		_("Credit") + ":Currency/Currency:120",
-		_("Created Date") + ":Datetime:150",
-		_("Created By") + ":Data:200",
-		_("Modified Date") + ":Datetime:150",
-		_("Modified By") + ":Data:200"
+		_("CreatedDate") + ":Datetime:150",
+		_("CreatedBy") + ":Data:200",
+		_("ModifiedDate") + ":Datetime:150",
+		_("ModifiedBy") + ":Data:200"
 	]
 
 def get_recheck_journal_entry(filters):
@@ -84,6 +84,22 @@ def get_conditions(filters):
 		conditions += "and jv1.voucher_type = 'Debit Note'"
 	elif filters.get("entry_type") == "Credit Note":
 		conditions += "and jv1.voucher_type = 'Credit Note'"
+	else:
+		conditions += ""
+
+	if filters.get("recheck_month") == "If Posting Date > Created Date":
+		conditions += "and (date(jv1.posting_date) > date(jv1.creation))"
+	elif filters.get("recheck_month") == "If Posting Date < Created Date":
+		conditions += "and (date(jv1.posting_date) < date(jv1.creation))"
+	elif filters.get("recheck_month") == "If Posting Date > Document Date":
+		conditions += "and (date(jv1.posting_date) > date(jv1.cheque_date))"
+	elif filters.get("recheck_month") == "If Posting Date < Document Date":
+		conditions += "and (date(jv1.posting_date) < date(jv1.cheque_date))"
+	elif filters.get("recheck_month") == "Error Input Year":
+		if filters.get("from_date") is not None or filters.get("to_date") is not None:
+			frappe.throw(_("please, don't fill from date  and to date"))
+
+		conditions += "and (year(jv1.posting_date) > year(jv1.creation)) or (year(jv1.posting_date) > year(jv1.cheque_date))"
 	else:
 		conditions += ""
 

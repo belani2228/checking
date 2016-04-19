@@ -22,20 +22,20 @@ def get_columns():
 		_("Customer Name") + ":Link/Customer:300",
 		_("Customer Group") + ":Link/Customer Group:120",
 		_("Territory") + ":Link/Territory:100",
-		_("Posting Date") + ":Date:100",
-		_("Posting Time") + ":Time:100",
+		_("PostingDate") + ":Date:100",
+		_("PostingTime") + ":Time:100",
 		_("No.Document") + ":Data:120",
-		_("Document Date") + ":Date:100",
+		_("VehicleDate") + ":Date:100",
 		_("No.Vehicle") + ":Data:100",
 		_("Currency") + ":Link/Currency:100",
 		_("Rate (IDR to Other)") + ":Currency:120",
 		_("Amount") + ":Currency:120",
 		_("Amount (IDR)") + ":Currency:120",
 		_("Amount (IDR) Rounded") + ":Currency:150",
-		_("Created Date") + ":Datetime:150",
-		_("Created By") + ":Data:200",
-		_("Modified Date") + ":Datetime:150",
-		_("Modified By") + ":Data:200"
+		_("CreatedDate") + ":Datetime:150",
+		_("CreatedBy") + ":Data:200",
+		_("ModifiedDate") + ":Datetime:150",
+		_("ModifiedBy") + ":Data:200"
 	]
 
 
@@ -85,6 +85,22 @@ def get_conditions(filters):
 
 	if filters.get("to_date"):
 		conditions += "and posting_date <= '%s'" % filters["to_date"]
+
+	if filters.get("recheck_month") == "If Posting Date > Created Date":
+		conditions += "and (date(posting_date) > date(creation))"
+	elif filters.get("recheck_month") == "If Posting Date < Created Date":
+		conditions += "and (date(posting_date) < date(creation))"
+	elif filters.get("recheck_month") == "If Posting Date > Vehicle Date":
+		conditions += "and (date(posting_date) > date(lr_date))"
+	elif filters.get("recheck_month") == "If Posting Date < Vehicle Date":
+		conditions += "and (date(posting_date) < date(lr_date))"
+	elif filters.get("recheck_month") == "Error Input Year":
+		if filters.get("from_date") is not None or filters.get("to_date") is not None:
+			frappe.throw(_("please, don't fill from date  and to date"))
+
+		conditions += "and (year(posting_date) > year(creation)) or (year(posting_date) > year(lr_date))"
+	else:
+		conditions += ""
 
 	if filters.get("entry_type") == "Draft":
 		conditions += "and docstatus = '0' and is_return = '0'"

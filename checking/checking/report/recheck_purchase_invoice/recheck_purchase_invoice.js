@@ -43,7 +43,12 @@ frappe.query_reports["Recheck Purchase Invoice"] = {
 			"options": " \nDraft\nOverdue\nPaid",
 			"default": "Draft"
 		},
-
+		{
+			"fieldname":"recheck_month",
+			"label": __("Recheck Error Input Posting Date"),
+			"fieldtype": "Select",
+			"options": " \nIf Posting Date > Created Date\nIf Posting Date < Created Date\nIf Posting Date > Document Date\nIf Posting Date < Document Date\nError Input Year"
+		}
 	],
 	"formatter":function (row, cell, value, columnDef, dataContext, default_formatter) {
 						value = default_formatter(row, cell, value, columnDef, dataContext);
@@ -65,6 +70,16 @@ frappe.query_reports["Recheck Purchase Invoice"] = {
 										}else  {
 											  value = "<span style='color:#006400;font-weight:bold'>" + value + "</span>";
 										}
+						}
+
+						if(columnDef.id == "PostingDate") {
+										value = "<span style='color:#AA6E39;font-weight:bold'>" + value + "</span>";
+						}
+						if(columnDef.id == "DocumentDate") {
+										value = "<span style='color:#AA6E39;font-weight:bold'>" + value + "</span>";
+						}
+						if(columnDef.id == "CreatedDate") {
+										value = "<span style='color:#AA6E39;font-weight:bold'>" + value + "</span>";
 						}
 
 						return value;

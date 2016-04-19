@@ -41,6 +41,12 @@ frappe.query_reports["Recheck Delivery Note"] = {
 			"fieldtype": "Select",
 			"options": " \nDraft\nTo Bill\nCompleted\nReturn",
 			"default": "Draft"
+		},
+		{
+			"fieldname":"recheck_month",
+			"label": __("Recheck Error Input Posting Date"),
+			"fieldtype": "Select",
+			"options": " \nIf Posting Date > Created Date\nIf Posting Date < Created Date\nIf Posting Date > Vehicle Date\nIf Posting Date < Vehicle Date\nError Input Year"
 		}
 	],
 	"formatter":function (row, cell, value, columnDef, dataContext, default_formatter) {
@@ -60,6 +66,16 @@ frappe.query_reports["Recheck Delivery Note"] = {
 												value = "<span style='color:red;font-weight:bold'>" + value + "</span>";
 										}
 						}
+						if(columnDef.id == "PostingDate") {
+										value = "<span style='color:#AA6E39;font-weight:bold'>" + value + "</span>";
+						}
+						if(columnDef.id == "VehicleDate") {
+										value = "<span style='color:#AA6E39;font-weight:bold'>" + value + "</span>";
+						}
+						if(columnDef.id == "CreatedDate") {
+										value = "<span style='color:#AA6E39;font-weight:bold'>" + value + "</span>";
+						}
+
 						return value;
 				}
 }

@@ -6,6 +6,8 @@ import frappe
 from frappe.utils import cint, flt, cstr
 from frappe import _
 import frappe.defaults
+from erpnext.accounts.utils import get_fiscal_year
+from frappe.utils import get_first_day, get_last_day, add_to_date, nowdate, getdate, add_days
 
 from erpnext.controllers.buying_controller import BuyingController
 from erpnext.accounts.utils import get_account_currency
@@ -26,26 +28,24 @@ def get_columns():
 		_("Document") + "::120",
 		_("No.Purchase Receipt")+":Link/Purchase Receipt:150",
 		_("Supplier Name") + ":Link/Supplier:300",
-		_("Posting Date") + ":Date:100",
-		_("Posting Time") + ":Time:100",
+		_("PostingDate") + ":Date:100",
+		_("PostingTime") + ":Time:100",
 		_("No.Document") + ":Data:120",
-		_("Document Date") + ":Date:100",
+		_("VehicleDate") + ":Date:100",
 		_("No.Vehicle") + ":Data:100",
 		_("Currency") + ":Data:100",
 		_("Rate (IDR to Other)") + ":Currency:120",
 		_("Amount") + ":Currency/Currency:120",
 		_("Amount (IDR)") + ":Currency:120",
 		_("Amount (IDR) Rounded") + ":Currency:150",
-		_("Created Date") + ":Datetime:150",
-		_("Created By") + ":Data:200",
-		_("Modified Date") + ":Datetime:150",
-		_("Modified By") + ":Data:200"
+		_("CreatedDate") + ":Datetime:150",
+		_("CreatedBy") + ":Data:200",
+		_("ModifiedDate") + ":Datetime:150",
+		_("ModifiedBy") + ":Data:200"
 	]
-
 
 def get_recheck_purchase_receipt(filters):
 	conditions = get_conditions(filters)
-	#return frappe.db.sql("""select item_name,item_group,stock_uom,expense_account,income_account,has_variants,is_purchase_item,is_sales_item,is_asset_item,is_sub_contracted_item from tabItem where has_variants = '0' and item_group = 'layanan' %s""" % conditions, as_list=1)
 	return frappe.db.sql(
 		"""select
 				status,
@@ -74,6 +74,7 @@ def get_recheck_purchase_receipt(filters):
 
 def get_conditions(filters):
 	conditions = ""
+
 	if filters.get("from_date"):
 		conditions += "and posting_date >= '%s'" % filters["from_date"]
 
@@ -82,6 +83,22 @@ def get_conditions(filters):
 
 	if filters.get("purchase_receipt"):
 		conditions += "and name = '%s'" % filters["purchase_receipt"]
+
+	if filters.get("recheck_month") == "If Posting Date > Created Date":
+		conditions += "and (date(posting_date) > date(creation))"
+	elif filters.get("recheck_month") == "If Posting Date < Created Date":
+		conditions += "and (date(posting_date) < date(creation))"
+	elif filters.get("recheck_month") == "If Posting Date > Vehicle Date":
+		conditions += "and (date(posting_date) > date(lr_date))"
+	elif filters.get("recheck_month") == "If Posting Date < Vehicle Date":
+		conditions += "and (date(posting_date) < date(lr_date))"
+	elif filters.get("recheck_month") == "Error Input Year":
+		if filters.get("from_date") is not None or filters.get("to_date") is not None:
+			frappe.throw(_("please, don't fill from date  and to date"))
+			
+		conditions += "and (year(posting_date) > year(creation)) or (year(posting_date) > year(lr_date))"
+	else:
+		conditions += ""
 
 	if filters.get("entry_type") == "Draft":
 		conditions += "and docstatus = '0' and is_return = '0'"
