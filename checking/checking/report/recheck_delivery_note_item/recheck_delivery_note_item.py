@@ -86,9 +86,11 @@ def get_conditions(filters):
 	else:
 		conditions += "and dn1.per_billed <= '100'"
 
+  #----------------------recheck warehouse-----------------------------------
 	if ((filters.get("recheck_warehouse") is not None) and (filters.get("warehouse") is not None)) :
 		 frappe.throw(_("please, don't fill 'warehouse' filter if you use 'recheck warehouse if input wrong cost center' filter"))
 
+  #----------------------recheck warehouse-----------------------------------
 	if filters.get("recheck_warehouse") == "Gudang Buah-Dadap":
 		conditions += "and (dn2.warehouse = 'Gudang Buah - Dadap - ABC' and dn2.cost_center != 'Buah/Jakarta - ABC')"
 	elif filters.get("recheck_warehouse") == "Gudang Bawang-Dadap":
@@ -103,6 +105,19 @@ def get_conditions(filters):
 		conditions += "and (dn2.warehouse = 'Toko Songoyudan - ABC' and dn2.cost_center != 'Songoyudan Toko - ABC')"
 	elif filters.get("recheck_warehouse") == "Gudang Pios":
 		conditions += "and (dn2.warehouse = 'Gudang Pios - ABC' and dn2.cost_center != 'AKS Gudang - ABC')"
+	else:
+		conditions += ""
+
+   #----------------------recheck customer-----------------------------------
+   	if filters.get("recheck_customer") == "Customer Buah-Jkt":
+		conditions += "and dn1.customer_group = 'Buah-Dadap' and dn2.warehouse != 'Gudang Buah - Dadap - ABC'"
+
+	elif filters.get("recheck_customer") == "Customer Bawang-Jkt":
+		conditions += "and dn1.customer_group = 'Bawang-Dadap' and dn2.warehouse != 'Gudang Bawang - Dadap - ABC'"
+
+	elif filters.get("recheck_customer") == "Customer AKS-Sby":
+		conditions += "and (dn1.customer_group = 'Pios' or dn1.customer_group = 'Puspa' or dn1.customer_group = 'Suri' or dn1.customer_group = 'Songoyudan') and (dn2.warehouse = 'Gudang Bawang - Dadap - ABC' or dn2.warehouse = 'Gudang Buah - Dadap - ABC')"
+
 	else:
 		conditions += ""
 

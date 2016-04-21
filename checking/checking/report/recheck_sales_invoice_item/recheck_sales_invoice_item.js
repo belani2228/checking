@@ -54,6 +54,12 @@ frappe.query_reports["Recheck Sales Invoice Item"] = {
 			"fieldtype": "Select",
 			"options": " \nDraft\nOverdue\nPaid",
 			"default": "Draft"
+		},
+		{
+			"fieldname":"recheck_customer",
+			"label": __("recheck customer use wrong warehouse"),
+			"fieldtype": "Select",
+			"options": " \nCustomer Buah-Jkt\nCustomer Bawang-Jkt\nCustomer AKS-Sby"
 		}
 	],
 	"formatter":function (row, cell, value, columnDef, dataContext, default_formatter) {

@@ -33,6 +33,7 @@ def get_columns():
 		#_("Packing (Amount)") + ":Currency/Currency:150",
 		#_("C") + ":Currency:150",
 		_("Amount (IDR)") + ":Currency:150",
+		_("Warehouse") + ":Link/Warehouse:200",
 		_("Cost Center") + ":Link/Cost Center:150",
 		_("Delivery Note") + ":Link/Delivery Note:100",
 		_("Expense Account") + "::200",
@@ -63,6 +64,7 @@ def get_recheck_sales_invoice_item(filters):
 
 				si2.rate,
 				si2.amount,
+				si2.warehouse,
 				si2.cost_center,
 				si2.delivery_note,
 				si2.expense_account,
@@ -110,6 +112,7 @@ def get_conditions(filters):
 	if filters.get("to_date"):
 		conditions += "and si1.posting_date <= '%s'" % filters["to_date"]
 
+    #----------------------recheck entry type-----------------------------------
 	if filters.get("entry_type") == "Draft":
 		conditions += "and si1.docstatus = '0'"
 	elif filters.get("entry_type") == "Paid":
@@ -118,5 +121,19 @@ def get_conditions(filters):
 		conditions += "and si1.docstatus = '1' and si1.outstanding_amount != '0'"
 	else:
 		conditions += "and (si1.docstatus = '1' or si1.docstatus = '0')"
+
+    #----------------------recheck customer-----------------------------------
+ 	if ((filters.get("customer_group") is not None) and (filters.get("recheck_customer") is not None)) :
+		 frappe.throw(_("please, don't fill 'customer group' filter if you use 'Recheck customer use wrong warehouse' filter"))
+
+    #----------------------recheck customer-----------------------------------
+	if filters.get("recheck_customer") == "Customer Buah-Jkt":
+		conditions += "and si1.customer_group = 'Buah-Dadap' and si2.warehouse != 'Gudang Buah - Dadap - ABC'"
+	elif filters.get("recheck_customer") == "Customer Bawang-Jkt":
+		conditions += "and si1.customer_group = 'Bawang-Dadap' and si2.warehouse != 'Gudang Bawang - Dadap - ABC'"
+	elif filters.get("recheck_customer") == "Customer AKS-Sby":
+		conditions += "and (si1.customer_group = 'Pios' or si1.customer_group = 'Puspa' or si1.customer_group = 'Suri' or si1.customer_group = 'Songoyudan') and (si2.warehouse = 'Gudang Bawang - Dadap - ABC' or si2.warehouse = 'Gudang Buah - Dadap - ABC')"
+	else:
+		conditions += ""
 
 	return conditions
