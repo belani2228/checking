@@ -52,8 +52,8 @@ frappe.query_reports["Recheck Delivery Note Item"] = {
 			"fieldname":"recheck_warehouse",
 			"label": __("recheck warehouse if input wrong cost center"),
 			"fieldtype": "Select",
-			"options": " \nGudang Buah-Dadap\nGudang Bawang-Dadap\nGudang Suri\nToko Pios\nToko Puspa\nToko Songoyudan",
-		},
+			"options": " \nGudang Buah-Dadap\nGudang Bawang-Dadap\nGudang Suri\nGudang Pios\nToko Pios\nToko Puspa\nToko Songoyudan",
+		}
 	],
 	"formatter":function (row, cell, value, columnDef, dataContext, default_formatter) {
 						value = default_formatter(row, cell, value, columnDef, dataContext);

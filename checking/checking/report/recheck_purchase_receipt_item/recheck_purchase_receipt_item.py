@@ -103,15 +103,15 @@ def get_conditions(filters):
 	elif filters.get("recheck_warehouse") == "Gudang Bawang-Dadap":
 		conditions += "and (pr2.warehouse = 'Gudang Bawang - Dadap - ABC' and pr2.cost_center != 'Bawang/Jakarta - ABC')"
 	elif filters.get("recheck_warehouse") == "Gudang Suri":
-		conditions += "and (pr2.warehouse = 'Gudang Suri - ABC' and pr2.cost_center != 'AKS - ABC') and (pr2.warehouse = 'Gudang Suri - ABC' and pr2.cost_center != 'Sarden - ABC')"
+		conditions += "and (pr2.warehouse = 'Gudang Suri - ABC' and pr2.cost_center != 'AKS Gudang - ABC') and (pr2.warehouse = 'Gudang Suri - ABC' and pr2.cost_center != 'Sarden - ABC')"
 	elif filters.get("recheck_warehouse") == "Toko Puspa":
-		conditions += "and (pr2.warehouse = 'Toko Puspa - ABC' and pr2.cost_center != 'Puspa - ABC')"
+		conditions += "and (pr2.warehouse = 'Toko Puspa - ABC' and pr2.cost_center != 'Puspa Toko - ABC')"
 	elif filters.get("recheck_warehouse") == "Toko Pios":
-		conditions += "and (pr2.warehouse = 'Toko Pios - ABC' and pr2.cost_center != 'Pios - ABC')"
+		conditions += "and (pr2.warehouse = 'Toko Pios - ABC' and pr2.cost_center != 'Pios Toko - ABC')"
 	elif filters.get("recheck_warehouse") == "Toko Songoyudan":
-		conditions += "and (pr2.warehouse = 'Toko Songoyudan - ABC' and pr2.cost_center != 'Songoyudan - ABC')"
+		conditions += "and (pr2.warehouse = 'Toko Songoyudan - ABC' and pr2.cost_center != 'Songoyudan Toko - ABC')"
+	elif filters.get("recheck_warehouse") == "Gudang Pios":
+		conditions += "and (pr2.warehouse = 'Gudang Pios - ABC' and pr2.cost_center != 'AKS Gudang - ABC')"
 	else:
 		conditions += ""
-	return conditions
-
 	return conditions
