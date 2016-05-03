@@ -49,13 +49,19 @@ def get_data():
 				},
 				{
 					"type": "report",
-					"name": "Check Error Delivery Note Item",
+					"name": "Check Error Landed Cost Voucher",
 					"doctype": "Report Center",
 					"is_query_report": True,
 				},
 				{
 					"type": "report",
-					"name": "Check Error Landed Cost Voucher",
+					"name": "Check Error Purchase Invoice Landed Cost",
+					"doctype": "Report Center",
+					"is_query_report": True,
+				},
+				{
+					"type": "report",
+					"name": "Check Error Delivery Note Item",
 					"doctype": "Report Center",
 					"is_query_report": True,
 				}
