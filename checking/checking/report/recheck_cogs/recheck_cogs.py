@@ -34,7 +34,7 @@ def get_columns():
 		_("Packing (Amount)") + ":Currency/Currency:150",
 		_("Exchange Rate") + ":Currency:150",
 		_("Amount (IDR)") + ":Currency:150",
-		_("LCV Amount (IDR)") + ":Currency:150",
+		_("LCVAmountIDR") + ":Currency:150",
 		_("COGS Amount (IDR)") + ":Currency:150",
 		_("COGS Amount/QTY (IDR)") + ":Currency:180",
 		_("Warehouse") + ":Link/Warehouse:200",

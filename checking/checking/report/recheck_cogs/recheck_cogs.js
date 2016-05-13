@@ -60,6 +60,13 @@ frappe.query_reports["Recheck COGS"] = {
 												value = "<span style='color:red;font-weight:bold'>" + value + "</span>";
 										}
 						}
+
+						if (columnDef.id == "LCVAmountIDR") {
+									  if(dataContext.LCVAmountIDR <1){
+												value = "<span style='color:red;font-weight:bold'>" + value + "</span>";
+										}
+						}
+
 						return value;
 				}
 }
