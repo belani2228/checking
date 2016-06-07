@@ -160,6 +160,12 @@ def get_data():
 					"name": "Recheck Sales Invoice Item",
 					"doctype": "Report Center",
 					"is_query_report": True,
+				},
+				{
+					"type": "report",
+					"name": "Recheck Item Never Been Sold",
+					"doctype": "Report Center",
+					"is_query_report": True,
 				}
 			]
 		},
