@@ -33,7 +33,7 @@ def get_list_item_product(filters):
      	it.`item_name`,
      	sle.`warehouse`,
      	sle.`stock_uom`,
-     	sum(IF(sle.voucher_type = 'Stock Reconciliation',sle.qty_after_transaction,sle.actual_qty)) as bola,
+     	sum(IF(sle.voucher_type = 'Stock Reconciliation',sle.qty_after_transaction,sle.actual_qty)) as actualqty,
      	IF(sle.`voucher_type` = 'Delivery Note', (select `packing_uom` from `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (select `uom` FROM `tabPurchase Receipt Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (select `packing_uom` FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (select `packing_uom` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`)))) AS packinguom,
      	sum(IF(sle.`voucher_type` = 'Delivery Note', (select `packing_qty`*-1 from `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (select `received_qty` from `tabPurchase Receipt Item` where `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (select IF(sle.`actual_qty` <= 1, `packing_qty`*-1, `packing_qty`) FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (select `packing_qty` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`))))) AS packingqty
 
@@ -44,6 +44,11 @@ def get_list_item_product(filters):
      	sle.`docstatus` = '1' %s
 	GROUP BY
 		sle.item_code,sle.warehouse
+	HAVING
+		((sum(IF(sle.voucher_type = 'Stock Reconciliation',sle.qty_after_transaction,sle.actual_qty)) > 0)
+		or (sum(IF(sle.voucher_type = 'Stock Reconciliation',sle.qty_after_transaction,sle.actual_qty)) < 0))
+		or ((sum(IF(sle.`voucher_type` = 'Delivery Note', (select `packing_qty`*-1 from `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (select `received_qty` from `tabPurchase Receipt Item` where `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (select IF(sle.`actual_qty` <= 1, `packing_qty`*-1, `packing_qty`) FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (select `packing_qty` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`))))) > 0)
+        or (sum(IF(sle.`voucher_type` = 'Delivery Note', (select `packing_qty`*-1 from `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (select `received_qty` from `tabPurchase Receipt Item` where `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (select IF(sle.`actual_qty` <= 1, `packing_qty`*-1, `packing_qty`) FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (select `packing_qty` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`))))) < 0))
 	""" %conditions, as_list=1)
 
 def get_conditions(filters):
