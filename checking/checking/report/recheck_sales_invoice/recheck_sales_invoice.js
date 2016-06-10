@@ -46,7 +46,7 @@ frappe.query_reports["Recheck Sales Invoice"] = {
 			"fieldname":"entry_type",
 			"label": __("Status"),
 			"fieldtype": "Select",
-			"options": " \nDraft\nOverdue\nPaid",
+			"options": " \nDraft\nOverdue\nPaid\nReturn",
 			"default": "Draft"
 		},
 		{
@@ -65,6 +65,12 @@ frappe.query_reports["Recheck Sales Invoice"] = {
 														value = "<span style='color:green;font-weight:bold'>" + value + "</span>";
 										}else  {
 											  value = "<span style='color:orange;font-weight:bold'>" + value + "</span>";
+										}
+						}
+
+						if (columnDef.id == "Document") {
+										if(dataContext.Document == "Return"){
+												value = "<span style='color:red;font-weight:bold'>" + value + "</span>";
 										}
 						}
 

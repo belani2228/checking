@@ -19,6 +19,7 @@ def get_columns():
 	    _("Status") + ":Data:80",
 		_("Document") + "::100",
 		_("No.Delivery Note")+":Link/Delivery Note:100",
+		_("No.Referensi")+":Link/Delivery Note:100",
 		_("Customer Name") + ":Link/Customer:300",
 		_("Customer Group") + ":Link/Customer Group:120",
 		_("Territory") + ":Link/Territory:100",
@@ -47,7 +48,9 @@ def get_recheck_delivery_note(filters):
 		"""select
 				status,
 				if(is_return = 1,"Return","Delivery Note"),
-				name,customer,
+				name,
+				return_against,
+				customer,
 				customer_group,
 				territory,
 				posting_date,

@@ -7,7 +7,7 @@
  "custom": 0, 
  "docstatus": 0, 
  "doctype": "DocType", 
- "document_type": "Document", 
+ "document_type": "", 
  "fields": [
   {
    "allow_on_submit": 0, 
@@ -44,7 +44,7 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 0, 
- "modified": "2016-03-30 14:24:10.621832", 
+ "modified": "2016-06-10 11:21:48.770977", 
  "modified_by": "Administrator", 
  "module": "Checking", 
  "name": "Report Center", 
@@ -75,5 +75,6 @@
  "read_only": 0, 
  "read_only_onload": 0, 
  "sort_field": "modified", 
- "sort_order": "DESC"
+ "sort_order": "DESC", 
+ "track_seen": 0
 }

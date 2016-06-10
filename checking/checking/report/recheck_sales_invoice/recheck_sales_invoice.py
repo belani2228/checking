@@ -16,8 +16,10 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + "::80",
+		_("Document") + "::100",
 		_("Customer Group") + ":Link/Customer Group:100",
 		_("No.Sales Invoice")+":Link/Sales Invoice:100",
+		_("No.Referensi")+":Link/Sales Invoice:100",
 		_("Customer Name") + ":Link/Customer:300",
 		_("Territory") + ":Link/Territory:100",
 		_("PostingDate") + ":Date:100",
@@ -43,8 +45,10 @@ def get_recheck_sales_invoice(filters):
 	return frappe.db.sql(
 		"""select
 				if(si2.due_date >= si2.posting_date and si2.docstatus = 1 and si2.outstanding_amount = 0,"Paid",if(si2.docstatus = 0,"Draft","Overdue")) as docstatussi,
+				if(si2.is_return = 1,"Return","Sales Invoice"),
 				c1.customer_group,
-				si2.name,si2.customer,
+				si2.name,si2.return_against,
+				si2.customer,
 				si2.territory,
 				si2.posting_date,
 				si2.due_date,
@@ -107,11 +111,13 @@ def get_conditions(filters):
 		conditions += ""
 
 	if filters.get("entry_type") == "Draft":
-		conditions += "and si2.docstatus = '0'"
+		conditions += "and si2.docstatus = '0' and si2.is_return = '0'"
 	elif filters.get("entry_type") == "Paid":
-		conditions += "and si2.docstatus = '1' and si2.outstanding_amount = '0'"
+		conditions += "and si2.docstatus = '1' and si2.outstanding_amount = '0' and si2.is_return = '0'"
 	elif filters.get("entry_type") == "Overdue":
-		conditions += "and si2.docstatus = '1' and si2.outstanding_amount != '0'"
+		conditions += "and si2.docstatus = '1' and si2.outstanding_amount != '0' and si2.is_return = '0'"
+	elif filters.get("entry_type") == "Return":
+		conditions += "and si2.is_return = '1'"
 	else:
 		conditions += "and (si2.docstatus = '1' or si2.docstatus = '0')"
 
