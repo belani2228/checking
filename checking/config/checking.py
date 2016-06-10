@@ -4,12 +4,24 @@ from frappe import _
 def get_data():
 	return [
 		{
-			"label": _("Document"),
+			"label": _("Report"),
 			"items": [
 				{
 					"type": "doctype",
 					"name": "Report Center",
 					"description": _("Report Center - Beta")
+				},
+				{
+					"type": "report",
+					"name": "Ending Stock",
+					"is_query_report": True,
+					"doctype": "Report Center"
+				},
+				{
+					"type": "report",
+					"name": "Stock Card",
+					"is_query_report": True,
+					"doctype": "Report Center"
 				}
 			]
 
@@ -40,19 +52,8 @@ def get_data():
 					"name": "Chart of Account",
 					"doctype": "Report Center",
 					"is_query_report": True,
-				},
-				{
-					"type": "report",
-					"name": "Ending Stock",
-					"is_query_report": True,
-					"doctype": "Report Center"
-				},
-				{
-					"type": "report",
-					"name": "Stock Card",
-					"is_query_report": True,
-					"doctype": "Report Center"
 				}
+
 			]
 		},
 		{
