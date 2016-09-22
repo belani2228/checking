@@ -47,12 +47,12 @@ def get_data():
 					"is_query_report": True,
 					"doctype": "Report Center"
 				},
-				{
-					"type": "report",
-					"name": "Chart of Account",
-					"doctype": "Report Center",
-					"is_query_report": True,
-				}
+				#{
+				#	"type": "report",
+				#	"name": "Chart of Account",
+				#	"doctype": "Report Center",
+				#	"is_query_report": True,
+				#}
 
 			]
 		},
