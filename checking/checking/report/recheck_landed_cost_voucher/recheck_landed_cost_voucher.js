@@ -38,7 +38,7 @@ frappe.query_reports["Recheck Landed Cost Voucher"] = {
 			"fieldname":"group_by",
 			"label": __("Group By"),
 			"fieldtype": "Select",
-			"options": "no.lcv\nPurchase Receipt\nItem Code",
+			"options": "no.lcv\nReceipt Document\nPurchase Receipt\nItem Code",
 			"default": "Purchase Receipt"
 		}
 	]

@@ -14,11 +14,11 @@ def execute(filters=None):
 	source = lcv_data.grouped_data if filters.get("group_by") != "Purchase Receipt" else lcv_data.data
 	group_wise_columns = frappe._dict({
 		"no.lcv": ["parent","posting_date","total_amountxd"],
-		"purchase_receipt": ["parent", "purchase_receipt","supplier","posting_date","total_amountxd"],
-		"item_code": ["parent", "item_code","supplier","posting_date","total_amountxd"]
-
-
+		"purchase_receipt": ["parent", "purchase_receipt","supplier","posting_date","total_amountxd","total_amountxd1"],
+		"receipt_document": ["parent", "receipt_document","supplier","posting_date","total_amountxd","total_amountxd1"],
+		"item_code": ["parent","item_code","supplier","posting_date","total_amountxd","total_amountxd1"]
 	})
+
 	columns = get_columns(group_wise_columns, filters)
 	for src in source:
 		row = []
@@ -31,11 +31,13 @@ def get_columns(group_wise_columns, filters):
 	columns = []
 	column_map = frappe._dict({
 		"parent": _("No. LCV")+":Link/Landed Cost Voucher:80",
-		"purchase_receipt": _("No. Purchase Receipt")+":Link/Purchase Receipt:150",
+		"purchase_receipt": _("Old No. Purchase Receipt")+":Link/Purchase Receipt:180",
+		"receipt_document": _("No. Purchase Receipt")+":Link/Purchase Receipt:150",
 		"item_code": _("Item Name") + ":Link/Item:300",
 		"supplier": _("Supplier Name") + ":Link/Supplier:300",
 		"posting_date": _("Posting Date") + ":Date:100",
-		"total_amountxd": _("Amount /ITEM") + ":Currency:120"
+		"total_amountxd": _("Amount /ITEM") + ":Currency:120",
+		"total_amountxd1": _("Amount /ITEM1") + ":Currency:120"
 	})
 
 	for col in group_wise_columns.get(scrub(filters.group_by)):
@@ -56,16 +58,18 @@ def get_recheck_landed_cost_voucher(filters):
 			"""select
 					lcv3.parent,
 					lcv3.purchase_receipt,
+					lcv3.receipt_document,
 					pr1.supplier,
 					pr1.posting_date,
-					sum(if(lcv3.item_code,lcv3.applicable_charges,0)) as total_amountxd
+					sum(if(lcv3.item_code,lcv3.applicable_charges,0)) as total_amountxd,
+					sum(lcv3.applicable_charges) as total_amountxd1,
 					lcv3.creation,lcv3.owner,
 					lcv3.modified,lcv3.modified_by
 			   from
 			   		`tabLanded Cost Item` lcv3
 					inner join `tabPurchase Receipt` pr1
 			   where
-			   		pr1.name = lcv3.purchase_receipt
+			   		((pr1.name = lcv3.purchase_receipt) or (pr1.name = lcv3.receipt_document))
 					and lcv3.docstatus < 2 %s
 			""" % conditions, as_list=1)
 
@@ -110,20 +114,25 @@ class LcvGenerator(object):
 			conditions += " and pr1.posting_date >= %(from_date)s"
 		if self.filters.to_date:
 			conditions += " and pr1.posting_date <= %(to_date)s"
+
 		if self.filters.group_by == "Purchase Receipt":
-			conditions +="group by lcv3.purchase_receipt order by lcv3.purchase_receipt desc,pr1.posting_date desc"
+			conditions +="and lcv3.purchase_receipt != '' group by lcv3.purchase_receipt order by lcv3.purchase_receipt desc,pr1.posting_date desc"
 		elif self.filters.group_by == "Item Code":
-				conditions +="group by lcv3.item_code order by lcv3.purchase_receipt desc,pr1.posting_date desc"
+				conditions +="group by lcv3.item_code, lcv3.parent order by pr1.posting_date desc"
+		elif self.filters.group_by == "Receipt Document":
+					conditions +="and lcv3.receipt_document != '' group by lcv3.receipt_document order by lcv3.receipt_document desc,pr1.posting_date desc"
 		else:
 				conditions +="order by lcv3.purchase_receipt desc,pr1.posting_date desc"
 
 		self.si_list = frappe.db.sql("""select
 				lcv3.parent,
 				lcv3.purchase_receipt,
+				lcv3.receipt_document,
 				lcv3.item_code,
 				pr1.supplier,
 				pr1.posting_date,
 				sum(if(lcv3.item_code,lcv3.applicable_charges,0)) as total_amountxd,
+				sum(lcv3.applicable_charges) as total_amountxd1,
 				lcv3.creation,lcv3.owner,
 				lcv3.modified,lcv3.modified_by
 		   from
@@ -131,7 +140,7 @@ class LcvGenerator(object):
 				inner join `tabPurchase Receipt` pr1
 
 		   where
-				pr1.name = lcv3.purchase_receipt
+				((pr1.name = lcv3.purchase_receipt) or (pr1.name = lcv3.receipt_document))
 				and lcv3.docstatus < 2 %s
 
 			""" % (conditions,), self.filters, as_dict=1)

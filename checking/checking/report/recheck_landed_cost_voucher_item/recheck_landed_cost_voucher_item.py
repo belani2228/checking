@@ -18,9 +18,9 @@ def get_columns():
 	return [
 		_("Status")+":Data:80",
 		_("No. LCV")+":Link/Landed Cost Voucher:80",
+		_("Old No.Purchase Receipt")+":Link/Purchase Receipt:150",
 		_("No. Purchase Receipt")+":Link/Purchase Receipt:150",
 		_("Supplier Name") + ":Link/Supplier:250",
-
 		_("Item Code") + ":Link/Item:300",
 		_("Based On") + "::80",
 		_("Amount LCV / QTY (IDR)") + ":Currency:150",
@@ -37,6 +37,7 @@ def get_recheck_landed_cost_voucher_item(filters):
 				if(lcv1.docstatus = 0,"Draft","Submit") as docstatuslcv,
 				lcv1.name,
 				lcv3.purchase_receipt,
+				lcv3.receipt_document,
 				lcv2.supplier,
 				lcv3.item_code,
 				lcv1.distribute_charges_based_on,
