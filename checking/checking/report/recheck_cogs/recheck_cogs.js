@@ -63,7 +63,29 @@ frappe.query_reports["Recheck COGS"] = {
 
 						if (columnDef.id == "LCVAmountIDR") {
 									  if(dataContext.LCVAmountIDR <1){
+												if(dataContext.SupplierType == "Local"){
+												  value = "<span style='color:orange;font-weight:bold'>" + value + "</span>";
+											  }else {
+											  	value = "<span style='color:red;font-weight:bold'>" + value + "</span>";
+											  }
+										}else{
+										  	if(dataContext.SupplierType == "Local"){
+											  	value = "<span style='color:green;font-weight:bold'>" + value + "</span>";
+											  }
+										}
+						}
+
+						if (columnDef.id == "SupplierType") {
+									  if(dataContext.SupplierType == "Import"){
+											if(dataContext.LCVAmountIDR <1){
 												value = "<span style='color:red;font-weight:bold'>" + value + "</span>";
+											}
+										}else{
+											if(dataContext.LCVAmountIDR <1){
+											    value = "<span style='color:orange;font-weight:bold'>" + value + "</span>";
+											}else{
+												  value = "<span style='color:green;font-weight:bold'>" + value + "</span>";
+											}
 										}
 						}
 
