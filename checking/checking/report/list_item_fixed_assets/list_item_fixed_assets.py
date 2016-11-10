@@ -28,7 +28,6 @@ def get_columns():
 		_("Is Asset Item") + ":Data:80",
 		_("Is Fixed Item") + ":Data:80",
 		_("Is Sub Contracted Item") + ":Data:80"
-
 	]
 
 def get_list_item_product(filters):
@@ -50,9 +49,9 @@ def get_list_item_product(filters):
 		from
 			`tabItem`
 		where
-			has_variants = '0' and item_group != 'bahan baku' and item_group != 'layanan' and is_fixed_asset != 1 %s
+			is_fixed_asset = 1 %s
 		order by
-			item_code asc, item_name asc
+			item_code asc,item_name asc
 			""" %conditions, as_list=1)
 
 def get_conditions(filters):

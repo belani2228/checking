@@ -34,5 +34,54 @@ frappe.query_reports["Stock Card"] = {
 			"label": __("Voucher #"),
 			"fieldtype": "Data"
 		}
-	]
-	}
+	],
+	"formatter":function (row, cell, value, columnDef, dataContext, default_formatter) {
+						value = default_formatter(row, cell, value, columnDef, dataContext);
+						if (columnDef.id == "Qty") {
+										if(dataContext.VoucherType == "Stock Entry"){
+											if(dataContext.Qty >0){
+												value = "<span style='color:orange;font-weight:bold'>" + value + "</span>";
+											}else{
+												if(dataContext.Qty == 0){
+											   	value = "<span style='color:red;font-weight:bold'>" + value + "</span>";
+												}
+											}
+										}else{
+											if(dataContext.VoucherType == "Purchase Receipt"){
+											    value = "<span style='color:green;font-weight:bold'>" + value + "</span>";
+											}
+										}
+						}
+
+						if (columnDef.id == "PackingQty") {
+										if(dataContext.VoucherType == "Stock Entry"){
+											if(dataContext.PackingQty >0){
+												value = "<span style='color:orange;font-weight:bold'>" + value + "</span>";
+											}else{
+												if(dataContext.PackingQty == 0){
+											   	value = "<span style='color:red;font-weight:bold'>" + value + "</span>";
+												}
+											}
+										}else{
+											if(dataContext.VoucherType == "Purchase Receipt"){
+											    value = "<span style='color:green;font-weight:bold'>" + value + "</span>";
+											}
+										}
+						}
+
+						if (columnDef.id == "VoucherType") {
+									  if(dataContext.VoucherType == "Stock Entry"){
+											if(dataContext.Qty >1){
+												value = "<span style='color:orange;font-weight:bold'>" + value + "</span>";
+											}
+										}else{
+											if(dataContext.VoucherType == "Purchase Receipt"){
+											    value = "<span style='color:green;font-weight:bold'>" + value + "</span>";
+											}
+										}
+						}
+
+
+						return value;
+				}
+}

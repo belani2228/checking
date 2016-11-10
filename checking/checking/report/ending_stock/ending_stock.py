@@ -19,10 +19,10 @@ def get_columns():
 		_("Item Code")+":Link/Item:100",
 		_("Item Name") + ":Data:100",
 		_("Warehouse") + ":Data:100",
-		_("Stock UOM") + ":Data:100",
+		_("StockUOM") + ":Data:100",
 		_("Qty") + ":Float:100",
-		_("Packing UoM") + ":Data:100",
-		_("Packing Qty") + ":Float:100"
+		_("PackingUoM") + ":Data:100",
+		_("PackingQty") + ":Float:100"
 	]
 
 def get_list_item_product(filters):
@@ -34,8 +34,8 @@ def get_list_item_product(filters):
      	sle.`warehouse`,
      	sle.`stock_uom`,
      	sum(IF(sle.voucher_type = 'Stock Reconciliation',sle.qty_after_transaction,sle.actual_qty)) as actualqty,
-     	IF(sle.`voucher_type` = 'Delivery Note', (select `packing_uom` from `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (select `uom` FROM `tabPurchase Receipt Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (select `packing_uom` FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (select `packing_uom` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`)))) AS packinguom,
-     	sum(IF(sle.`voucher_type` = 'Delivery Note', (select `packing_qty`*-1 from `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (select `received_qty` from `tabPurchase Receipt Item` where `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (select IF(sle.`actual_qty` <= 1, `packing_qty`*-1, `packing_qty`) FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (select `packing_qty` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`))))) AS packingqty
+     	IF(sle.`voucher_type` = 'Delivery Note', (SELECT `packing_uom` FROM `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Sales Invoice', (SELECT `packing_uom` FROM `tabSales Invoice Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (SELECT `uom` FROM `tabPurchase Receipt Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (SELECT `packing_uom` FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (SELECT `packing_uom` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`))))) AS packinguom,
+     	sum(IF(sle.`voucher_type` = 'Delivery Note', (SELECT `packing_qty`*-1 FROM `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Sales Invoice', (SELECT `packing_qty`*-1 FROM `tabSales Invoice Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (SELECT `received_qty` FROM `tabPurchase Receipt Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (SELECT IF(sle.`actual_qty` <= 1, `packing_qty`*-1, `packing_qty`) FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (SELECT `packing_qty` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`)))))) AS packingqty
 
     FROM
      	`tabStock Ledger Entry` sle, `tabItem` it
@@ -47,8 +47,8 @@ def get_list_item_product(filters):
 	HAVING
 		((sum(IF(sle.voucher_type = 'Stock Reconciliation',sle.qty_after_transaction,sle.actual_qty)) > 0)
 		or (sum(IF(sle.voucher_type = 'Stock Reconciliation',sle.qty_after_transaction,sle.actual_qty)) < 0))
-		or ((sum(IF(sle.`voucher_type` = 'Delivery Note', (select `packing_qty`*-1 from `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (select `received_qty` from `tabPurchase Receipt Item` where `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (select IF(sle.`actual_qty` <= 1, `packing_qty`*-1, `packing_qty`) FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (select `packing_qty` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`))))) > 0)
-        or (sum(IF(sle.`voucher_type` = 'Delivery Note', (select `packing_qty`*-1 from `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (select `received_qty` from `tabPurchase Receipt Item` where `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (select IF(sle.`actual_qty` <= 1, `packing_qty`*-1, `packing_qty`) FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (select `packing_qty` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`))))) < 0))
+		or ((sum(IF(sle.`voucher_type` = 'Delivery Note', (SELECT `packing_qty`*-1 FROM `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Sales Invoice', (SELECT `packing_qty`*-1 FROM `tabSales Invoice Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (SELECT `received_qty` FROM `tabPurchase Receipt Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (SELECT IF(sle.`actual_qty` <= 1, `packing_qty`*-1, `packing_qty`) FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (SELECT `packing_qty` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`)))))) > 0)
+        or (sum(IF(sle.`voucher_type` = 'Delivery Note', (SELECT `packing_qty`*-1 FROM `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Sales Invoice', (SELECT `packing_qty`*-1 FROM `tabSales Invoice Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (SELECT `received_qty` FROM `tabPurchase Receipt Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (SELECT IF(sle.`actual_qty` <= 1, `packing_qty`*-1, `packing_qty`) FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (SELECT `packing_qty` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`)))))) < 0))
 	""" %conditions, as_list=1)
 
 def get_conditions(filters):

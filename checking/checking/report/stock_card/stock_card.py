@@ -23,8 +23,8 @@ def get_columns():
 		_("Stock UOM") + ":Data:80",
 		_("Qty") + ":Float:100",
 		_("Packing UoM") + ":Data:100",
-		_("Packing Qty") + ":Float:100",
-		_("Voucher Type") + ":Data:100",
+		_("PackingQty") + ":Float:100",
+		_("VoucherType") + ":Data:120",
 		_("Voucher No") + ":Dynamic Link/Voucher Type:100"
 
 	]
@@ -39,8 +39,8 @@ def get_list_item_product(filters):
      	CONCAT(sle.`posting_date`,' ',sle.`posting_time`),
      	sle.`stock_uom`,
      	(IF(sle.voucher_type = 'Stock Reconciliation',sle.qty_after_transaction,sle.actual_qty)) as bola,
-     	IF(sle.`voucher_type` = 'Delivery Note', (select `packing_uom` from `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (select `uom` FROM `tabPurchase Receipt Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (select `packing_uom` FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (select `packing_uom` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`)))) AS packinguom,
-     	IF(sle.`voucher_type` = 'Delivery Note', (select `packing_qty`*-1 from `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (select `received_qty` from `tabPurchase Receipt Item` where `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (select IF(sle.`actual_qty` <= 1, `packing_qty`*-1, `packing_qty`) FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (select `packing_qty` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`)))) AS packingqty,
+     	IF(sle.`voucher_type` = 'Delivery Note', (SELECT `packing_uom` FROM `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Sales Invoice', (SELECT `packing_uom` FROM `tabSales Invoice Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (SELECT `uom` FROM `tabPurchase Receipt Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (SELECT `packing_uom` FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (SELECT `packing_uom` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`))))) AS packinguom,
+     	IF(sle.`voucher_type` = 'Delivery Note', (SELECT `packing_qty`*-1 FROM `tabDelivery Note Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Sales Invoice', (SELECT `packing_qty`*-1 FROM `tabSales Invoice Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Purchase Receipt', (SELECT `received_qty` FROM `tabPurchase Receipt Item` WHERE `name` = sle.`voucher_detail_no`), IF(sle.`voucher_type` = 'Stock Entry', (SELECT IF(sle.`actual_qty` <= 1, `packing_qty`*-1, `packing_qty`) FROM `tabStock Entry Detail` WHERE `name` = sle.`voucher_detail_no`), (SELECT `packing_qty` FROM `tabStock Reconciliation Item` WHERE `parent` = sle.`voucher_no` AND `item_code` = sle.`item_code`))))) AS packingqty,
 	 	sle.`voucher_type`,
      	sle.`voucher_no`
     FROM

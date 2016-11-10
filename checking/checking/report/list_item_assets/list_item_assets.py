@@ -26,6 +26,7 @@ def get_columns():
 		_("Is Purchase Item") + ":Data:80",
 		_("Is Sales Item") + ":Data:80",
 		_("Is Asset Item") + ":Data:80",
+		_("Is Fixed Item") + ":Data:80",
 		_("Is Sub Contracted Item") + ":Data:80"
 
 	]
@@ -44,6 +45,7 @@ def get_list_item_product(filters):
 			if(is_purchase_item = '1',"Yes","No") as ispurchaseitem,
 			if(is_sales_item = '1',"Yes","No") as issalesitem,
 			if(is_asset_item = '1',"Yes","No") as issassetitem,
+			if(is_fixed_asset = '1',"Yes","No") as isfixeditem,
 			if(is_sub_contracted_item = '1',"Yes","No") as issubcontracteditem
 		from
 			`tabItem`

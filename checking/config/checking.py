@@ -47,6 +47,12 @@ def get_data():
 					"is_query_report": True,
 					"doctype": "Report Center"
 				},
+				{
+					"type": "report",
+					"name": "List Item Fixed Assets",
+					"is_query_report": True,
+					"doctype": "Report Center"
+				},
 				#{
 				#	"type": "report",
 				#	"name": "Chart of Account",
