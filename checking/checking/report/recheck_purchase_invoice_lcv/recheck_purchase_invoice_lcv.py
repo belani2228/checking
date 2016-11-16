@@ -28,6 +28,8 @@ def get_columns():
 		_("Rate (IDR to Other)") + ":Currency:120",
 		_("Amount (IDR)") + ":Currency:120",
 		_("Outstanding Amount") + ":Currency/Currency:150",
+		_("Expense Account") + ":Data:300",
+		_("Payable Account") + ":Data:350",
 		_("CreatedDate") + ":Datetime:150",
 		_("CreatedBy") + ":Data:200",
 		_("ModifiedDate") + ":Datetime:150",
@@ -50,6 +52,8 @@ def get_recheck_purchase_invoice_lcv(filters):
 				pi2.conversion_rate,
 				pi2.base_total,
 				pi2.outstanding_amount,
+				pi2.against_expense_account,
+				pi2.credit_to,
 				pi2.creation,pi2.owner,
 				pi2.modified,pi2.modified_by
 		   from
