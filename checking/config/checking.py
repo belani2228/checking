@@ -189,6 +189,24 @@ def get_data():
 			]
 		},
 		{
+			"label": _("Recheck Stock Entry"),
+			"icon": "icon-table",
+			"items": [
+				{
+					"type": "report",
+					"name": "Recheck Stock Entry",
+					"doctype": "Report Center",
+					"is_query_report": True,
+				},
+				{
+					"type": "report",
+					"name": "Recheck Stock Entry Detail",
+					"doctype": "Report Center",
+					"is_query_report": True,
+				},
+			]
+		},
+		{
 			"label": _("Recheck COGS"),
 			"icon": "icon-table",
 			"items": [
