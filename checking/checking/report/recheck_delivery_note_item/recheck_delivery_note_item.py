@@ -17,7 +17,9 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + ":Data:80",
+		_("Document") + "::100",
 		_("No.Delivery Note")+":Link/Delivery Note:110",
+		_("Remarks")+":Data:80",
 		_("Posting Date") + ":Date:100",
 		_("Item Code") + ":Link/Item:300",
 		_("Item Name") + "::300",
@@ -44,7 +46,11 @@ def get_recheck_delivery_note(filters):
 	conditions = get_conditions(filters)
 	return frappe.db.sql(
 		"""select
-				dn1.status,dn2.parent,dn1.posting_date,dn2.item_code,dn2.item_name,dn2.item_group,dn2.packing_qty,dn2.packing_uom,dn2.conversion_factor,
+				dn1.status,
+				if(dn1.is_return = 1,"Return","Delivery Note"),
+				dn2.parent,
+				dn1.transporter_name,
+				dn1.posting_date,dn2.item_code,dn2.item_name,dn2.item_group,dn2.packing_qty,dn2.packing_uom,dn2.conversion_factor,
 		        dn2.qty,dn2.stock_uom,dn2.rate,dn2.amount,dn2.warehouse,dn2.expense_account,dn2.cost_center,dn2.creation,
 				dn2.owner,dn2.modified,dn2.modified_by
 		   from

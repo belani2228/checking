@@ -72,6 +72,12 @@ frappe.query_reports["Recheck Delivery Note Item"] = {
 												value = "<span style='color:orange;font-weight:bold'>" + value + "</span>";
 										}
 						}
+						
+						if (columnDef.id == "Document") {
+										if(dataContext.Document == "Return"){
+												value = "<span style='color:red;font-weight:bold'>" + value + "</span>";
+										}
+						}
 
 						return value;
 				}

@@ -21,6 +21,7 @@ def get_columns():
 		_("No.Puchase Receipt")+":Link/Purchase Receipt:140",
 		_("No.PU") + ":Data:120",
 		_("No.Vehicle") + ":Data:120",
+		_("No.BL") + ":Data:140",
 		_("Posting Date") + ":Date:100",
 		_("Supplier Name") + ":Link/Supplier:200",
 		_("SupplierType") + ":Data:100",
@@ -52,7 +53,8 @@ def get_recheck_cogs(filters):
 	"""select
 			pr1.status,
 			if(is_return = 1,"Return","Purchase Receipt"),
-			pr2.parent,pr1.pu_number,pr1.lr_no,pr1.posting_date,pr1.supplier,s1.supplier_type,pr2.item_code,pr2.item_name,
+			pr2.parent,pr1.pu_number,pr1.lr_no,
+			pr1.bl_no,pr1.posting_date,pr1.supplier,s1.supplier_type,pr2.item_code,pr2.item_name,
 			pr2.stock_qty,pr2.stock_uom,pr2.received_qty,
 			pr2.qty,pr2.uom,pr2.conversion_factor,pr1.currency,
 			pr2.rate,pr2.amount,

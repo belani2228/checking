@@ -17,7 +17,10 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + ":Data:80",
-		_("No.Puchase Receipt")+":Link/Purchase Receipt:120",
+		_("Document") + "::120",
+		_("No.Puchase Receipt")+":Link/Purchase Receipt:140",
+		_("No.Pu")+":Data:120",
+		_("No.BL")+":Data:140",
 		_("Posting Date") + ":Date:100",
 		_("Supplier Name") + ":Link/Supplier:200",
 		_("Item Code") + ":Link/Item:300",
@@ -49,7 +52,12 @@ def get_recheck_purhase_receipt(filters):
 	#return frappe.db.sql("""select `tabPurchase Receipt`.status,`tabPurchase Receipt`.name,`tabPurchase Receipt`.supplier,`tabPurchase Receipt`.company,`tabPurchase Receipt`.posting_date,`tabPurchase Receipt`.posting_time,`tabPurchase Receipt`.transporter_name,`tabPurchase Receipt`.lr_date,`tabPurchase Receipt`.lr_no,`tabPurchase Receipt`.currency,`tabPurchase Receipt`.price_list_currency,`tabPurchase Receipt`.conversion_rate,`tabPurchase Receipt`.base_net_total,concat(`tabCurrency`.symbol," ",`tabPurchase Receipt`.base_grand_total),`tabPurchase Receipt`.net_total,`tabPurchase Receipt`.base_total,`tabPurchase Receipt`.base_rounded_total from `tabPurchase Receipt` inner join `tabCurrency` on `tabPurchase Receipt`.currency = `tabCurrency`.name where `tabPurchase Receipt`.docstatus < 2 %s""" % conditions, as_list=1)
 	return frappe.db.sql(
 		"""select
-				pr1.status,pr2.parent,pr1.posting_date,pr1.supplier,pr2.item_code,pr2.item_name,pr2.item_group,
+				pr1.status,
+				if(pr1.is_return = 1,"Return","Purchase Receipt"),
+				pr2.parent,
+				pr1.pu_number,
+				pr1.bl_no,
+				pr1.posting_date,pr1.supplier,pr2.item_code,pr2.item_name,pr2.item_group,
 				pr2.stock_qty,pr2.stock_uom,pr2.received_qty,
 				pr2.qty,pr2.uom,pr2.conversion_factor,pr1.currency,
 		        pr2.rate,pr2.amount,

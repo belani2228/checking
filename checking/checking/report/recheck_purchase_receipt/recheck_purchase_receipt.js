@@ -58,6 +58,12 @@ frappe.query_reports["Recheck Purchase Receipt"] = {
 										value = "<span style='color:#AA6E39;font-weight:bold'>" + value + "</span>";
 						}
 
+						if (columnDef.id == "Document") {
+										if(dataContext.Document == "Return"){
+												value = "<span style='color:red;font-weight:bold'>" + value + "</span>";
+										}
+						}
+
 						return value;
 				}
 }

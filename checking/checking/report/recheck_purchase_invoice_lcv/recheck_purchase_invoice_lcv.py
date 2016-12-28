@@ -18,6 +18,8 @@ def get_columns():
 	    _("Status") + "::80",
 		_("SupplierType") + "::80",
 		_("No.Purchase Invoice")+":Link/Purchase Invoice:150",
+		_("Supplier Inv") + ":Data:150",
+		_("No.PU") + ":Data:150",
 		_("Supplier Name") + ":Link/Supplier:300",
 		_("PostingDate") + ":Date:100",
 		_("Due Date") + ":Date:100",
@@ -30,9 +32,10 @@ def get_columns():
 		_("Outstanding Amount") + ":Currency/Currency:150",
 		_("Expense Account") + ":Data:300",
 		_("Payable Account") + ":Data:350",
-		_("CreatedDate") + ":Datetime:150",
+		_("Remarks") + ":Data:350",
+		_("CreatedDate") + ":Datetime:180",
 		_("CreatedBy") + ":Data:200",
-		_("ModifiedDate") + ":Datetime:150",
+		_("ModifiedDate") + ":Datetime:180",
 		_("ModifiedBy") + ":Data:200"
 	]
 
@@ -43,7 +46,10 @@ def get_recheck_purchase_invoice_lcv(filters):
 		"""select distinct
 				if(pi2.due_date >= pi2.posting_date and pi2.docstatus = 1 and pi2.outstanding_amount = 0,"Paid",if(pi2.docstatus = 0,"Draft","Overdue")) as docstatuspi,
 				s1.supplier_type,
-				pi2.name,pi2.supplier,
+				pi2.name,
+				pi2.bill_no,
+				pi2.pu_number,
+				pi2.supplier,
 				pi2.posting_date,
 				pi2.due_date,
 				pi2.bill_no,pi2.bill_date,
@@ -54,6 +60,7 @@ def get_recheck_purchase_invoice_lcv(filters):
 				pi2.outstanding_amount,
 				pi2.against_expense_account,
 				pi2.credit_to,
+				pi2.remarks,
 				pi2.creation,pi2.owner,
 				pi2.modified,pi2.modified_by
 		   from
