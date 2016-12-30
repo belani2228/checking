@@ -17,6 +17,7 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + ":Data:80",
+		_("Project") + "::100",
 		_("Document") + "::100",
 		_("No.Delivery Note")+":Link/Delivery Note:110",
 		_("Remarks")+":Data:80",
@@ -47,6 +48,7 @@ def get_recheck_delivery_note(filters):
 	return frappe.db.sql(
 		"""select
 				dn1.status,
+				dn1.project,
 				if(dn1.is_return = 1,"Return","Delivery Note"),
 				dn2.parent,
 				dn1.transporter_name,

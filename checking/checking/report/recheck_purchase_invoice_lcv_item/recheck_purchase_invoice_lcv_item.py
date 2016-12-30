@@ -17,6 +17,7 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + ":Data:80",
+		_("Project") + "::100",
 		_("SupplierType") + "::80",
 		_("No.Puchase Invoice")+":Link/Purchase Invoice:120",
 		_("Supplier Inv") + ":Data:150",
@@ -49,6 +50,7 @@ def get_recheck_purchase_invoice_item(filters):
 	return frappe.db.sql(
 		"""select
 				if(pi1.due_date >= pi1.posting_date and pi1.docstatus = 1 and pi1.outstanding_amount = 0,"Paid",if(pi1.docstatus = 0,"Draft","Overdue")) as docstatuspi,
+				pi2.project,
 				s1.supplier_type,
 				pi2.parent,
 				pi1.bill_no,

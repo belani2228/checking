@@ -16,6 +16,7 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + "::80",
+		_("Project") + "::100",
 		_("Document") + "::100",
 		_("Customer Group") + ":Link/Customer Group:100",
 		_("No.Sales Invoice")+":Link/Sales Invoice:100",
@@ -46,6 +47,7 @@ def get_recheck_sales_invoice(filters):
 	return frappe.db.sql(
 		"""select
 				if(si2.due_date >= si2.posting_date and si2.docstatus = 1 and si2.outstanding_amount = 0,"Paid",if(si2.docstatus = 0,"Draft","Overdue")) as docstatussi,
+				si2.project,
 				if(si2.is_return = 1,"Return","Sales Invoice"),
 				c1.customer_group,
 				si2.name,si2.return_against,

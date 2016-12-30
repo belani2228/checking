@@ -17,6 +17,7 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + ":Data:80",
+		_("Project") + "::100",
 		_("Document") + "::120",
 		_("No.Puchase Receipt")+":Link/Purchase Receipt:140",
 		_("No.Pu")+":Data:120",
@@ -53,6 +54,7 @@ def get_recheck_purhase_receipt(filters):
 	return frappe.db.sql(
 		"""select
 				pr1.status,
+				pr2.Project,
 				if(pr1.is_return = 1,"Return","Purchase Receipt"),
 				pr2.parent,
 				pr1.pu_number,
