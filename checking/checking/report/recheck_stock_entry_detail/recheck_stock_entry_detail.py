@@ -16,6 +16,7 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + "::80",
+		_("Project") + "::100",
 		_("Document") + "::120",
 		_("No.Stock Entry") + ":Link/Stock Entry:100",
 		_("Amended From") + ":Link/Stock Entry:100",
@@ -46,6 +47,7 @@ def get_recheck_stock_entry_detail(filters):
 	return frappe.db.sql(
 		"""select
 		        if(st1.docstatus = 0,"Draft","Submitted"),
+				st1.project,
 				st1.purpose,
 			    st1.name,
 				st1.amended_from,
