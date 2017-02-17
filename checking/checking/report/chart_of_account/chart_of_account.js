@@ -1,9 +1,5 @@
-// Copyright (c) 2016, molie and contributors
-// For license information, please see license.txt
-
-frappe.require("assets/erpnext/js/financial_statements.js");
-
-frappe.query_reports["Chart of Account"] = {
+frappe.require("assets/erpnext/js/checking_coa.js", function() {
+	frappe.query_reports["Chart of Account"] = {
 		"filters": [
 			{
 				"fieldname": "company",
@@ -13,6 +9,7 @@ frappe.query_reports["Chart of Account"] = {
 				"default": frappe.defaults.get_user_default("Company"),
 				"reqd": 1
 			},
+
 		],
 		"formatter": erpnext.financial_statements.formatter,
 		"tree": true,
@@ -20,3 +17,4 @@ frappe.query_reports["Chart of Account"] = {
 		"parent_field": "parent_account",
 		"initial_depth": 3
 	}
+});
