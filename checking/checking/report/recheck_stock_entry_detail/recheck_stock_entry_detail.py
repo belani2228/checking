@@ -59,7 +59,7 @@ def get_recheck_stock_entry_detail(filters):
 				st2.packing_qty,
 				st2.packing_uom,
 				st2.conversion_factor,
-				st2.actual_qty,
+				st2.transfer_qty,
 				st2.stock_uom,
 				st2.basic_rate,
 				st2.valuation_rate,
