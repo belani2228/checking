@@ -22,6 +22,7 @@ def get_columns():
 		_("No.Delivery Note")+":Link/Delivery Note:110",
 		_("Remarks")+":Data:80",
 		_("Posting Date") + ":Date:100",
+		_("Customer Name") + ":Link/Customer:250",
 		_("Item Code") + ":Link/Item:300",
 		_("Item Name") + "::300",
 		_("Item Group") + ":Link/Item Group:100",
@@ -52,7 +53,7 @@ def get_recheck_delivery_note(filters):
 				if(dn1.is_return = 1,"Return","Delivery Note"),
 				dn2.parent,
 				dn1.transporter_name,
-				dn1.posting_date,dn2.item_code,dn2.item_name,dn2.item_group,dn2.packing_qty,dn2.packing_uom,dn2.conversion_factor,
+				dn1.posting_date,dn1.customer,dn2.item_code,dn2.item_name,dn2.item_group,dn2.packing_qty,dn2.packing_uom,dn2.conversion_factor,
 		        dn2.qty,dn2.stock_uom,dn2.rate,dn2.amount,dn2.warehouse,dn2.expense_account,dn2.cost_center,dn2.creation,
 				dn2.owner,dn2.modified,dn2.modified_by
 		   from
