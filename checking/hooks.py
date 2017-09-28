@@ -15,7 +15,7 @@ app_license = "Copyright ABCFruit 2016"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/checking/css/checking.css"
+app_include_css = "/files/custom.css"
 # app_include_js = "/assets/checking/js/checking.js"
 
 # include js, css files in header of web template
