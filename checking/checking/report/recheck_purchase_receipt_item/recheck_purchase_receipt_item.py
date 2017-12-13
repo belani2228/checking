@@ -17,6 +17,7 @@ def execute(filters=None):
 def get_columns():
 	return [
 	    _("Status") + ":Data:80",
+		_("No.Vehicle") + ":Data:80",
 		_("Project") + "::100",
 		_("Document") + "::120",
 		_("No.Puchase Receipt")+":Link/Purchase Receipt:140",
@@ -53,7 +54,8 @@ def get_recheck_purhase_receipt(filters):
 	#return frappe.db.sql("""select `tabPurchase Receipt`.status,`tabPurchase Receipt`.name,`tabPurchase Receipt`.supplier,`tabPurchase Receipt`.company,`tabPurchase Receipt`.posting_date,`tabPurchase Receipt`.posting_time,`tabPurchase Receipt`.transporter_name,`tabPurchase Receipt`.lr_date,`tabPurchase Receipt`.lr_no,`tabPurchase Receipt`.currency,`tabPurchase Receipt`.price_list_currency,`tabPurchase Receipt`.conversion_rate,`tabPurchase Receipt`.base_net_total,concat(`tabCurrency`.symbol," ",`tabPurchase Receipt`.base_grand_total),`tabPurchase Receipt`.net_total,`tabPurchase Receipt`.base_total,`tabPurchase Receipt`.base_rounded_total from `tabPurchase Receipt` inner join `tabCurrency` on `tabPurchase Receipt`.currency = `tabCurrency`.name where `tabPurchase Receipt`.docstatus < 2 %s""" % conditions, as_list=1)
 	return frappe.db.sql(
 		"""select
-				pr1.status,
+				pr1.status,				
+				pr1.lr_no,
 				pr2.Project,
 				if(pr1.is_return = 1,"Return","Purchase Receipt"),
 				pr2.parent,
